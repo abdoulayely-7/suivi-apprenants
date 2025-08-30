@@ -1,62 +1,57 @@
-Cloner le projet depuis GitHub
+pour lancer le seeder executer la commande : npx prisma db seed
 
-Va sur la page GitHub du projet que tu veux récupérer.
+1️⃣ Mettre à jour la branche principale (main)
 
-Clique sur le bouton Code → copie l’URL (HTTPS ou SSH).
+Sur chaque machine des collaborateurs :
 
-Ouvre ton terminal et tape :
+git checkout main        # se placer sur main
+git pull origin main     # récupérer les derniers changements depuis GitHub
 
-git clone <URL_DU_PROJET>
+
+Cela télécharge les changements récents et les fusionne avec le main local.
+
+2️⃣ Passer sur sa branche personnelle
+
+Chaque collaborateur doit se positionner sur sa branche :
+
+git checkout <nom_branche>
 
 
 Exemple :
 
-git clone [https://github.com/utilisateur/mon-projet.git](https://github.com/abdoulayely-7/suivi-apprenants.git)
+git checkout abdoulaye
+
+3️⃣ Fusionner les changements de main dans sa branche
+
+Pour intégrer les nouveautés de main sans écraser son travail :
+
+git merge main
 
 
-Entre dans le dossier du projet :
+Si tout se passe bien, les changements de main sont fusionnés.
 
-cd mon-projet
+Si des conflits apparaissent, Git indiquera quels fichiers doivent être résolus.
 
-2️⃣ Vérifier les branches existantes
+⚠️ Les conflits doivent être résolus manuellement, puis faire :
 
-Pour voir les branches disponibles sur le projet :
+git add <fichiers_resolus>
+git commit
 
-git branch -a
+4️⃣ Pousser la branche mise à jour sur GitHub
 
+Après fusionner :
 
-Les branches locales apparaissent en blanc.
-
-Les branches distantes apparaissent en rouge avec remotes/origin/.
-
-3️⃣ Créer une branche avec ton nom
-
-Il est courant de nommer la branche avec ton prénom ou un format comme feature/<nom> ou abdoulaye/<nom>.
-Pour créer une branche et te positionner dessus :
-
-git checkout -b abdoulaye
+git push origin <nom_branche>
 
 
-Ici abdoulaye est le nom de ta branche.
+Cela met à jour la branche personnelle sur GitHub avec les derniers changements de main.
 
-L’option -b crée la branche et te place dessus directement.
-
-4️⃣ Vérifier que tu es sur la bonne branche
-git branch
-
-
-La branche sur laquelle tu te trouves est indiquée avec un *.
-
-Tu devrais voir :
-
-* abdoulaye
-  main
-
-5️⃣ Pousser ta branche sur GitHub
-
-Pour que ta branche existe aussi sur GitHub :
-
-git push origin abdoulaye
+5️⃣ Récapitulatif rapide pour les collaborateurs
+git checkout main
+git pull origin main
+git checkout <ma_branche>
+git merge main
+git push origin <ma_branche>
 
 
-✅ Voilà ! Maintenant tu peux travailler sur ton projet dans ta branche personnelle sans toucher à la branche principale (main).
+✅ Cela permet de garder chaque branche à jour avec main tout en continuant à travailler sur sa branche.

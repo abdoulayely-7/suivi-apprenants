@@ -7,34 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// =======================
-// 1. Niveaux
-// =======================
-// Représente un niveau d'évaluation pour une compétence (N1, N2, N3)
-model Niveau {
-  id    Int    @id @default(autoincrement())
-  name  String
 
-  userCompetences UserCompetence[] // relation avec UserCompetence
-}
+// ===============================
+// MODELS PRINCIPAUX
+// ===============================
 
-// =======================
-// 2. Profils
-// =======================
-// Catégories de comptes : Admin, Formateur, Apprenant, CM
-model Profil {
+model Profile {
   id    Int    @id @default(autoincrement())
-  name  String
-  users User[]
-}
-
-// =======================
-// 3. Profil de sortie
-// =======================
-// Profil final d'un apprenant : Dev Front, Dev Back, etc.
-model ProfilSortie {
-  id    Int    @id @default(autoincrement())
-  name  String
+  name  String @unique
   users User[]
 }
 
@@ -42,142 +22,39 @@ model ProfilSortie {
 // 4. Users
 // =======================
 model User {
-  id             Int          @id @default(autoincrement())
-  name           String
-  email          String       @unique
-  profilId       Int
-  profilSortieId Int?         // facultatif pour formateurs/admin
-  promoUsers     PromoUser[]
-  RefUser RefUser[]
-  userCompetences UserCompetence[]
-
-  profil        Profil         @relation(fields: [profilId], references: [id])
-  profilSortie  ProfilSortie?  @relation(fields: [profilSortieId], references: [id])
-
-}
-
-// =======================
-// 5. Promos
-// =======================
-model Promo {
-  id           Int         @id @default(autoincrement())
-  name         String      // ex: "P6", "P7"
-  promoUsers   PromoUser[]
-  promoRefs    PromoRef[]
-}
-
-// =======================
-// 6. Référentiels
-// =======================
-model Referentiel {
-  id        Int         @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
-  promoRefs PromoRef[]
-  RefUser RefUser[]
-  refCompetences RefCompetence[]
+  email     String   @unique
+  profileId Int
+  createdAt DateTime @default(now())
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  Promo     Promo[]  @relation("PromoToUser")
+
+  @@index([profileId], map: "User_profileId_fkey")
+}
+
+model Promo {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  users     User[]   @relation("PromoToUser")
 }
 
 // =======================
 // 7. Compétences
 // =======================
 model Competence {
-  id             Int             @id @default(autoincrement())
-  name           String
-  refCompetences RefCompetence[]
-  userCompetences UserCompetence[]
+  id      Int      @id @default(autoincrement())
+  name    String
+  niveaux Niveau[]
 }
 
-// =======================
-// 8. Tags
-// =======================
-model Tag {
-  id     Int      @id @default(autoincrement())
-  name   String   @unique
-  briefTags BriefTag[]
-}
-
-// =======================
-// 9. Briefs
-// =======================
-model Brief {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
-  briefTags BriefTag[]
-}
-
-// Table de liaison Brief ↔ Tag
-model BriefTag {
-  id      Int   @id @default(autoincrement())
-  briefId Int
-  tagId   Int
-
-  brief Brief @relation(fields: [briefId], references: [id])
-  tag   Tag   @relation(fields: [tagId], references: [id])
-
-  @@unique([briefId, tagId])
-}
-
-// =======================
-// 10. Tables de liaison
-// =======================
-
-// Promo ↔ Référentiel (une promo peut avoir plusieurs référentiels)
-model PromoRef {
-  id            Int         @id @default(autoincrement())
-  promoId       Int
-  referentielId Int
-
-  promo        Promo        @relation(fields: [promoId], references: [id])
-  referentiel  Referentiel  @relation(fields: [referentielId], references: [id])
-
-  @@unique([promoId, referentielId])
-}
-
-// Référentiel ↔ Compétence (une compétence peut appartenir à plusieurs référentiels)
-model RefCompetence {
-  id            Int          @id @default(autoincrement())
-  referentielId Int
-  competenceId  Int
-
-  referentiel   Referentiel  @relation(fields: [referentielId], references: [id])
-  competence    Competence   @relation(fields: [competenceId], references: [id])
-
-  @@unique([referentielId, competenceId])
-}
-
-// User ↔ Compétence avec Niveau
-model UserCompetence {
-  id           Int       @id @default(autoincrement())
-  userId       Int
+model Niveau {
+  id           Int        @id @default(autoincrement())
+  level        Int
+  description  String
   competenceId Int
-  niveauId     Int
+  competence   Competence @relation(fields: [competenceId], references: [id])
 
-  user        User       @relation(fields: [userId], references: [id])
-  competence  Competence @relation(fields: [competenceId], references: [id])
-  niveau      Niveau     @relation(fields: [niveauId], references: [id])
-
-  @@unique([userId, competenceId]) // un user ne peut avoir la même compétence qu'une seule fois
+  @@index([competenceId], map: "Niveau_competenceId_fkey")
 }
-
-// User ↔ Promo (apprenant ou formateur)
-model PromoUser {
-  id       Int   @id @default(autoincrement())
-  userId   Int
-  promoId  Int
-  user     User  @relation(fields: [userId], references: [id])
-  promo    Promo @relation(fields: [promoId], references: [id])
-
-  @@unique([userId, promoId]) 
-}
-model RefUser {
-  id            Int         @id @default(autoincrement())
-  userId        Int
-  referentielId  Int
-  user          User        @relation(fields: [userId], references: [id])
-  referentiel   Referentiel @relation(fields: [referentielId], references: [id])
-
-  @@unique([userId, referentielId])
-}
-
-
