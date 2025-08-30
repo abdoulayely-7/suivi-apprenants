@@ -168,7 +168,7 @@ model PromoUser {
   user     User  @relation(fields: [userId], references: [id])
   promo    Promo @relation(fields: [promoId], references: [id])
 
-  @@unique([userId, promoId]) // un user ne peut être dans la même promo deux fois
+  @@unique([userId, promoId]) 
 }
 model RefUser {
   id            Int         @id @default(autoincrement())
