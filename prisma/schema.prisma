@@ -7,43 +7,132 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+// ===============================
+// MODELS PRINCIPAUX
+// ===============================
+
 model Profile {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
+  id      Int    @id @default(autoincrement()) // Identifiant unique
+  name String // Libellé du profil
+
+  // Relation : un Profile peut avoir plusieurs Users
+  users User[]
+}
+
+model ProfilSortie {
+  id      Int    @id @default(autoincrement())
+  libelle String
+
+  // Relation : un ProfilSortie peut concerner plusieurs Users
   users User[]
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
+  id        Int    @id @default(autoincrement())
+  nom       String
+  prenom    String
+  email     String @unique
+  password  String
+  telephone String
+
+  // Relation avec Profile (1-N)
   profileId Int
-  createdAt DateTime @default(now())
-  profile   Profile  @relation(fields: [profileId], references: [id])
-  Promo     Promo[]  @relation("PromoToUser")
+  profile   Profile @relation(fields: [profileId], references: [id])
 
-  @@index([profileId], map: "User_profileId_fkey")
+  // Relation avec ProfilSortie (1-N)
+  profilSortieId Int?
+  profilSortie   ProfilSortie @relation(fields: [profilSortieId], references: [id])
+
+  // Relation avec PromoFormateur (association N-N entre Promo et User)
+  promos PromoFormateur[]
 }
 
-model Promo {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  users     User[]   @relation("PromoToUser")
-}
-
-model Competence {
-  id      Int      @id @default(autoincrement())
-  name    String
-  niveaux Niveau[]
+model Promotion {
+  id     Int    @id @default(autoincrement())
+  libelle String
+  nombreRef int 
+  debut   DateTime
+  fin     DateTime
+  refPromo  RefPromo[]
 }
 
 model Niveau {
-  id           Int        @id @default(autoincrement())
-  level        Int
-  description  String
-  competenceId Int
-  competence   Competence @relation(fields: [competenceId], references: [id])
+  id      Int    @id @default(autoincrement())
+  libelle String
 
-  @@index([competenceId], map: "Niveau_competenceId_fkey")
+  // Relation : un Niveau peut être associé à plusieurs Promos
+  promos Promo[]
+
+  // Relation : association avec Compétence via CompetenceNiveau
+  competences CompetenceNiveau[]
+}
+
+model Competence {
+  id      Int    @id @default(autoincrement())
+  libelle String
+
+  // Relation : association avec Niveau via CompetenceNiveau
+  niveaux CompetenceNiveau[]
+
+  // Relation : association avec Référentiel via ReferentielCompetence
+  referentiels ReferentielCompetence[]
+
+  // Relation : association N-N avec Tag
+  tags Tag[]
+}
+
+model Referentiel {
+  id      Int    @id @default(autoincrement())
+  libelle String
+  refPromo  RefPromo[]
+
+
+
+}
+
+model Tag {
+  id      Int    @id @default(autoincrement())
+  libelle String
+
+  // Relation : association N-N avec Compétence
+  competences Competence[]
+}
+
+// ===============================
+// CLASSES D’ASSOCIATION
+// ===============================
+
+// Association N-N entre Promo et User
+model RefUser {
+  refId Int
+  userId  Int
+
+  Referentiel Referentiel @relation(fields: [refId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@id([refId, userId]) // Clé primaire composite
+}
+
+// Association N-N entre Referentiel et Competence
+model ReferentielCompetence {
+
+  referentielId Int
+  competenceId  Int
+
+  referentiel Referentiel @relation(fields: [referentielId], references: [id])
+  competence  Competence  @relation(fields: [competenceId], references: [id])
+
+  @@id([referentielId, competenceId])
+}
+
+// Association N-N entre Competence et Niveau
+model CompetenceNiveau {
+  competenceId Int
+  niveauId     Int
+
+  competence Competence @relation(fields: [competenceId], references: [id])
+  niveau     Niveau     @relation(fields: [niveauId], references: [id])
+
+  @@id([competenceId, niveauId])
 }
