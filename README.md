@@ -18,7 +18,7 @@ Entre dans le dossier du projet :
 
 cd mon-projet
 
-2️ Vérifier les branches existantes
+2️⃣ Vérifier les branches existantes
 
 Pour voir les branches disponibles sur le projet :
 
@@ -29,9 +29,9 @@ Les branches locales apparaissent en blanc.
 
 Les branches distantes apparaissent en rouge avec remotes/origin/.
 
- Créer une branche avec ton nom
+3️⃣ Créer une branche avec ton nom
 
-
+Il est courant de nommer la branche avec ton prénom ou un format comme feature/<nom> ou abdoulaye/<nom>.
 Pour créer une branche et te positionner dessus :
 
 git checkout -b abdoulaye
@@ -41,7 +41,7 @@ Ici abdoulaye est le nom de ta branche.
 
 L’option -b crée la branche et te place dessus directement.
 
-4 Vérifier que tu es sur la bonne branche
+4️⃣ Vérifier que tu es sur la bonne branche
 git branch
 
 
@@ -52,7 +52,7 @@ Tu devrais voir :
 * abdoulaye
   main
 
-5️ Pousser ta branche sur GitHub
+5️⃣ Pousser ta branche sur GitHub
 
 Pour que ta branche existe aussi sur GitHub :
 
