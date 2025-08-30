@@ -1,4 +1,4 @@
-import {PrismaClient, Profile} from "@prisma/client";
+import {PrismaClient, Profil} from "@prisma/client";
 import { ProfileRepository } from "../repositories/ProfileRepository.js";
 
 export class ProfileService {
@@ -8,15 +8,15 @@ export class ProfileService {
         this.repo = new ProfileRepository(prisma);
     }
 
-    async getAllProfiles(): Promise<Profile[]> {
+    async getAllProfiles(): Promise<Profil[]> {
         return this.repo.findAll();
     }
 
-    async createProfile(data: Omit<Profile, "id">): Promise<Profile> {
+    async createProfile(data: Omit<Profil, "id">): Promise<Profil> {
         return this.repo.create(data);
     }
 
-    async updateProfile(id: number, data: Partial<Profile>): Promise<Profile> {
+    async updateProfile(id: number, data: Partial<Profil>): Promise<Profil> {
         return this.repo.update(id, data);
     }
 
@@ -24,7 +24,7 @@ export class ProfileService {
         return this.repo.delete(id);
     }
 
-    async findProfileById(id: number): Promise<Profile | null> {
+    async findProfileById(id: number): Promise<Profil | null> {
         return this.repo.findById(id);
     }
 }

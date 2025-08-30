@@ -8,6 +8,9 @@
     "type-check": "tsc --watch",
     "start": "node --watch dist/index.js  "
   },
+  "prisma": {
+    "seed": "node --loader ts-node/esm prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -16,6 +19,7 @@
     "@types/express": "^5.0.3",
     "@types/node": "^24.3.0",
     "prisma": "^6.15.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.2"
   },
