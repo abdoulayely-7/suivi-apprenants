@@ -1,12 +1,12 @@
-import { PrismaClient, Profile } from "@prisma/client";
+import { PrismaClient, Profil } from "@prisma/client";
 import { IRepository } from "./IRepository.js";
-export declare class ProfileRepository implements IRepository<Profile> {
+export declare class ProfileRepository implements IRepository<Profil> {
     private prisma;
     constructor(prisma: PrismaClient);
-    findAll(): Promise<Profile[]>;
-    findById(id: number): Promise<Profile | null>;
-    create(data: Omit<Profile, "id">): Promise<Profile>;
-    update(id: number, data: Partial<Profile>): Promise<Profile>;
+    findAll(): Promise<Profil[]>;
+    findById(id: number): Promise<Profil | null>;
+    create(data: Omit<Profil, "id">): Promise<Profil>;
+    update(id: number, data: Partial<Profil>): Promise<Profil>;
     delete(id: number): Promise<void>;
 }
 //# sourceMappingURL=ProfileRepository.d.ts.map

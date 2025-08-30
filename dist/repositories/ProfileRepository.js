@@ -4,19 +4,19 @@ export class ProfileRepository {
         this.prisma = prisma;
     }
     async findAll() {
-        return this.prisma.profile.findMany();
+        return this.prisma.profil.findMany();
     }
     async findById(id) {
-        return this.prisma.profile.findUnique({ where: { id } });
+        return this.prisma.profil.findUnique({ where: { id } });
     }
     async create(data) {
-        return this.prisma.profile.create({ data });
+        return this.prisma.profil.create({ data });
     }
     async update(id, data) {
-        return this.prisma.profile.update({ where: { id }, data });
+        return this.prisma.profil.update({ where: { id }, data });
     }
     async delete(id) {
-        await this.prisma.profile.delete({ where: { id } });
+        await this.prisma.profil.delete({ where: { id } });
     }
 }
 //# sourceMappingURL=ProfileRepository.js.map
