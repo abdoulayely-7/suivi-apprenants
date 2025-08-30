@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  profileId Int
+  createdAt DateTime @default(now())
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  Promo     Promo[]  @relation("PromoToUser")
+
+  @@index([profileId], map: "User_profileId_fkey")
+}
+
+model Promo {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  users     User[]   @relation("PromoToUser")
+}
+
+model Competence {
+  id      Int      @id @default(autoincrement())
+  name    String
+  niveaux Niveau[]
+}
+
+model Niveau {
+  id           Int        @id @default(autoincrement())
+  level        Int
+  description  String
+  competenceId Int
+  competence   Competence @relation(fields: [competenceId], references: [id])
+
+  @@index([competenceId], map: "Niveau_competenceId_fkey")
+}
