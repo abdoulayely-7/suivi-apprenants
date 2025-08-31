@@ -14,8 +14,8 @@ export declare class CompetenceService {
         };
     } & {
         id: number;
-        userId: number;
         competenceId: number;
+        userId: number;
         niveauId: number;
     })[]>;
 }
