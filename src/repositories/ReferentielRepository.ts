@@ -25,7 +25,12 @@ export class ReferentielRepository implements IRepository<Referentiel> {
     }
 
     async delete(id: number): Promise<void> {
-        await this.prisma.referentiel.delete({ where: { id } });
+        await this.prisma.$transaction([
+            this.prisma.refCompetence.deleteMany({ where: { referentielId: id } }),
+            this.prisma.promoRef.deleteMany({ where: { referentielId: id } }),
+            this.prisma.refUser.deleteMany({ where: { referentielId: id } }),
+            this.prisma.referentiel.delete({ where: { id } })
+        ]);
     }
 
     async getCompetencesByReferentielId(referentielId: number): Promise<Competence[]> {
