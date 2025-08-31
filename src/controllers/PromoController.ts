@@ -55,7 +55,7 @@ export class PromoController {
             const id: number = Number(req.params.id);
             const promoVerif = await service.findPromoById(id);
             if (!promoVerif) {
-                 res.status(404).json({ error: "Promo non trouvé" });
+                 res.status(404).json({ error: `Aucun promo non trouvé avec l'id ${id}` });
             }
             const data = CreatePromoSchema.parse(req.body);
             const promo = await service.updatePromo(id, data);

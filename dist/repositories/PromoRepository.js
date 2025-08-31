@@ -32,6 +32,18 @@ export class PromoRepository {
         return this.prisma.promo.update({ where: { id }, data: { ...data } });
     }
     async delete(id) {
+        const promoUsers = await this.prisma.promoUser.count({
+            where: { promoId: id }
+        });
+        const promoRefs = await this.prisma.promoRef.count({
+            where: { promoId: id }
+        });
+        if (promoUsers > 0) {
+            throw new Error("Impossible de supprimer la promo : des utilisateurs y sont encore rattachés");
+        }
+        if (promoRefs > 0) {
+            throw new Error("Impossible de supprimer la promo : des référentiels y sont encore rattachés");
+        }
         await this.prisma.promo.delete({ where: { id } });
     }
 }
