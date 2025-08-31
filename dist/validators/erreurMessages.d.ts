@@ -4,5 +4,11 @@ export declare const ErreurMessages: {
     profileNotFound: string;
     promoNotFound: string;
     missingReferentielName: string;
+    nameTooShort: string;
+    nameTooLong: string;
+    invalidDescription: string;
+    descriptionTooLong: string;
+    missingProfilSortie: string;
+    missingNiveauName: string;
 };
 //# sourceMappingURL=erreurMessages.d.ts.map

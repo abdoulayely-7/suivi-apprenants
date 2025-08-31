@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { ProfileService } from "../services/ProfileService.js";
+import { ProfileService } from "../services/ProfilService.js";
 import { PrismaClient } from "@prisma/client";
-import {CreateProfileSchema} from "../validators/profileValidator.js";
+import {CreateProfileSchema} from "../validators/profilValidator.js";
 
 const prisma = new PrismaClient();
 const service = new ProfileService(prisma);
@@ -20,7 +20,7 @@ export class ProfileController {
             }
             return res.json(profile);
         } catch (error: any) {
-           return  res.status(400).json({ error: error.message });
+            return  res.status(400).json({ error: error.message });
         }
     }
 
