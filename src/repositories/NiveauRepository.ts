@@ -1,6 +1,6 @@
 import { PrismaClient, Niveau } from "@prisma/client";
 import { IRepository } from "./IRepository.js";
-
+ 
 export class NiveauRepository implements IRepository<Niveau>{
     private prisma: PrismaClient;
 
@@ -23,9 +23,17 @@ export class NiveauRepository implements IRepository<Niveau>{
         return this.prisma.niveau.update({ where: { id }, data });
     }
 
-    async  delete(id: number): Promise<void> {
-        await this.prisma.niveau.delete({ where: { id } });
-    }
+    async delete(id: number): Promise<void> {
+   
+    await this.prisma.userCompetence.deleteMany({
+    where: { niveauId: id },
+  });
+
+   
+  await this.prisma.niveau.delete({
+    where: { id },
+  });
+}
 
 
 }

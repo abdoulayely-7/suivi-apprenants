@@ -1,7 +1,6 @@
 import express from "express";
-import competenceRoute from "./routes/competenceRoutes.js";
 import niveauRoute from "./routes/niveauRoute.js";
-
+import ProfilSortieRoutes from "./routes/ProfilSortieRoutes.js"
 const app = express();
 app.use(express.json());
 
@@ -9,6 +8,7 @@ app.use(express.json());
 app.get("/", (_req, res) => res.send("API en ligne "));
 
  
-app.use("/competence", competenceRoute);
+ 
 app.use("/niveau", niveauRoute);
+app.use("/profilSortie",ProfilSortieRoutes)
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));

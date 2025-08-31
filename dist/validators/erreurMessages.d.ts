@@ -1,8 +1,6 @@
-export declare const ErreurMessages: {
-    missingProfileName: string;
-};
 export declare const ErreurMessagess: {
-    missingCompetenceName: string;
+    missingProfilSortie: string;
+    missingNiveauName: string;
     nameTooShort: string;
     nameTooLong: string;
     invalidDescription: string;

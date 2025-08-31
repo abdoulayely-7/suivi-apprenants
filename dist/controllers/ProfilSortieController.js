@@ -1,21 +1,21 @@
-import { NiveauService } from "../services/NiveauService.js";
+import { ProfilSortieService } from "../services/ProfilSortiService.js";
 import { PrismaClient } from "@prisma/client";
-import { CreateNiveauSchema } from "../validators/NiveauValidator.js";
+import { CreateProfilSortieSchema } from "../validators/ProfilSortieValidator.js";
 const prisma = new PrismaClient();
-const service = new NiveauService(prisma);
-export class NiveauController {
+const service = new ProfilSortieService(prisma);
+export class ProfilSortieController {
     static async getAll(_req, res) {
-        const niveau = await service.getAllNiveau();
-        res.json(niveau);
+        const profilSortie = await service.getAllProfilSortie();
+        res.json(profilSortie);
     }
     static async findById(req, res) {
         try {
             const id = Number(req.params.id);
-            const niveau = await service.findNiveauById(id);
-            if (!niveau) {
-                return res.status(404).json({ error: "niveau non trouvé" });
+            const profilSortie = await service.findProfilSortieById(id);
+            if (!profilSortie) {
+                return res.status(404).json({ error: "profilSortie non trouvé" });
             }
-            return res.json(niveau);
+            return res.json(profilSortie);
         }
         catch (error) {
             return res.status(400).json({ error: error.message });
@@ -23,9 +23,9 @@ export class NiveauController {
     }
     static async create(req, res) {
         try {
-            const data = CreateNiveauSchema.parse(req.body);
-            const niveau = await service.createNiveau(data);
-            res.status(201).json(niveau);
+            const data = CreateProfilSortieSchema.parse(req.body);
+            const profilSortie = await service.createProfilSortie(data);
+            res.status(201).json(profilSortie);
         }
         catch (error) {
             const errors = error.errors ?? [{ message: error.message }];
@@ -35,9 +35,9 @@ export class NiveauController {
     static async update(req, res) {
         try {
             const id = Number(req.params.id);
-            const data = CreateNiveauSchema.parse(req.body);
-            const niveau = await service.updateNiveau(id, data);
-            res.json(niveau);
+            const { name } = req.body;
+            const profilSortie = await service.updateProfilSortie(id, name);
+            res.json(profilSortie);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
@@ -46,7 +46,7 @@ export class NiveauController {
     static async delete(req, res) {
         try {
             const id = Number(req.params.id);
-            await service.deleteNiveau(id);
+            await service.deleteProfilSortie(id);
             res.status(204).send();
         }
         catch (error) {
@@ -54,4 +54,4 @@ export class NiveauController {
         }
     }
 }
-//# sourceMappingURL=NiveauController.js.map
+//# sourceMappingURL=ProfilSortieController.js.map

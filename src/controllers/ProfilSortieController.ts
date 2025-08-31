@@ -1,24 +1,24 @@
 import { Request, Response } from "express";
-import { ProfileService } from "../services/ProfileService.js";
+import { ProfilSortieService } from "../services/ProfilSortiService.js";
 import { PrismaClient } from "@prisma/client";
-import {CreateProfileSchema} from "../validators/profileValidator.js";
+import { CreateProfilSortieSchema } from "../validators/ProfilSortieValidator.js";
 
 const prisma = new PrismaClient();
-const service = new ProfileService(prisma);
+const service = new ProfilSortieService(prisma);
 
-export class ProfileController {
+export class ProfilSortieController {
     static async getAll(_req: Request, res: Response) {
-        const profiles = await service.getAllProfiles();
-        res.json(profiles);
+        const profilSortie = await service.getAllProfilSortie();
+        res.json(profilSortie);
     }
     static async findById(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
-            const profile = await service.findProfileById(id);
-            if (!profile) {
-                return res.status(404).json({ error: "Profil non trouvé" });
+            const profilSortie = await service.findProfilSortieById(id);
+            if (!profilSortie) {
+                return res.status(404).json({ error: "profilSortie non trouvé" });
             }
-            return res.json(profile);
+            return res.json(profilSortie);
         } catch (error: any) {
            return  res.status(400).json({ error: error.message });
         }
@@ -26,9 +26,9 @@ export class ProfileController {
 
     static async create(req: Request, res: Response) {
         try {
-            const data = CreateProfileSchema.parse(req.body);
-            const profile = await service.createProfile(data);
-            res.status(201).json(profile);
+            const data = CreateProfilSortieSchema.parse(req.body);
+            const profilSortie = await service.createProfilSortie(data);
+            res.status(201).json(profilSortie);
         } catch (error: any) {
             const errors = error.errors ?? [{ message: error.message }];
             res.status(400).json({errors});
@@ -39,8 +39,8 @@ export class ProfileController {
         try {
             const id: number = Number(req.params.id);
             const { name } = req.body;
-            const profile = await service.updateProfile(id, name);
-            res.json(profile);
+            const profilSortie = await service.updateProfilSortie(id, name);
+            res.json(profilSortie);
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }
@@ -50,7 +50,7 @@ export class ProfileController {
         try {
             const id: number = Number(req.params.id);
 
-            await service.deleteProfile(id);
+            await service.deleteProfilSortie(id);
             res.status(204).send();
         } catch (error: any) {
             res.status(400).json({ error: error.message });

@@ -16,7 +16,12 @@ export class NiveauRepository {
         return this.prisma.niveau.update({ where: { id }, data });
     }
     async delete(id) {
-        await this.prisma.niveau.delete({ where: { id } });
+        await this.prisma.userCompetence.deleteMany({
+            where: { niveauId: id },
+        });
+        await this.prisma.niveau.delete({
+            where: { id },
+        });
     }
 }
 //# sourceMappingURL=NiveauRepository.js.map

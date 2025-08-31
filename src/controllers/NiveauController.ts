@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { NiveauService } from "../services/NiveauService.js";  
 import { PrismaClient } from "@prisma/client";
- 
+import { CreateNiveauSchema } from "../validators/NiveauValidator.js";
 
 const prisma = new PrismaClient();
 const service = new NiveauService(prisma);
@@ -27,7 +27,7 @@ export class NiveauController{
 
     static async create(req: Request, res: Response) {
             try {
-                const data = req.body;
+                const data = CreateNiveauSchema.parse(req.body);
                 const niveau = await service.createNiveau(data);
                 res.status(201).json(niveau);
             } catch (error: any) {
@@ -39,7 +39,7 @@ export class NiveauController{
     static async update(req: Request, res: Response) {
             try {
                 const id: number = Number(req.params.id);
-                const data = req.body;  
+                const data =  CreateNiveauSchema.parse(req.body);  
                 const niveau = await service.updateNiveau(id, data);
 
                 res.json(niveau);
