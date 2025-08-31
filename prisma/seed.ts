@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log("✅ Début du seed...");
+    console.log(" Début du seed...");
 
     // =======================
     // 1. Profils
