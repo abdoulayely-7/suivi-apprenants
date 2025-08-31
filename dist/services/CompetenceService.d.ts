@@ -8,6 +8,10 @@ export declare class CompetenceService {
     updateCompetence(id: number, data: Partial<Competence>): Promise<Competence>;
     deleteCompetence(id: number): Promise<void>;
     getNiveauxForCompetence(id: number): Promise<({
+        competence: {
+            id: number;
+            name: string;
+        };
         niveau: {
             id: number;
             name: string;

@@ -55,7 +55,10 @@ export class CompetenceRepository {
     async findNiveauxByCompetence(id) {
         return this.prisma.userCompetence.findMany({
             where: { competenceId: id },
-            include: { niveau: true },
+            include: {
+                niveau: true,
+                competence: true
+            },
         });
     }
 }

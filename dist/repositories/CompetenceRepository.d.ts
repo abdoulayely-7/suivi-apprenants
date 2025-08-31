@@ -9,6 +9,10 @@ export declare class CompetenceRepository implements IRepository<Competence> {
     update(id: number, data: Partial<Competence>): Promise<Competence>;
     delete(id: number): Promise<void>;
     findNiveauxByCompetence(id: number): Promise<({
+        competence: {
+            id: number;
+            name: string;
+        };
         niveau: {
             id: number;
             name: string;
