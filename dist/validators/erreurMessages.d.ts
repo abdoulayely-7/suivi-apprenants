@@ -3,5 +3,6 @@ export declare const ErreurMessages: {
     missingPromoName: string;
     profileNotFound: string;
     promoNotFound: string;
+    missingReferentielName: string;
 };
 //# sourceMappingURL=erreurMessages.d.ts.map

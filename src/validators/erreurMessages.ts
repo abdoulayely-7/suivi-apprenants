@@ -3,4 +3,5 @@ export const ErreurMessages = {
     missingPromoName: "Le nom de la promo est obligatoire",
     profileNotFound: "Profil non trouvé",
     promoNotFound: "Promo non trouvée",
+    missingReferentielName: "Le nom du référentiel est obligatoire",
 }
