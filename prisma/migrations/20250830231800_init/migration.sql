@@ -1,56 +1,10 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE `Niveau` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
 
-  - You are about to drop the column `competenceId` on the `Niveau` table. All the data in the column will be lost.
-  - You are about to drop the column `description` on the `Niveau` table. All the data in the column will be lost.
-  - You are about to drop the column `level` on the `Niveau` table. All the data in the column will be lost.
-  - You are about to drop the column `createdAt` on the `Promo` table. All the data in the column will be lost.
-  - You are about to drop the column `createdAt` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `profileId` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the `Profile` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `_PromoToUser` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `name` to the `Niveau` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `profilId` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
--- DropForeignKey
-ALTER TABLE `Niveau` DROP FOREIGN KEY `Niveau_competenceId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `User` DROP FOREIGN KEY `User_profileId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `_PromoToUser` DROP FOREIGN KEY `_PromoToUser_A_fkey`;
-
--- DropForeignKey
-ALTER TABLE `_PromoToUser` DROP FOREIGN KEY `_PromoToUser_B_fkey`;
-
--- DropIndex
-DROP INDEX `Niveau_competenceId_fkey` ON `Niveau`;
-
--- DropIndex
-DROP INDEX `User_profileId_fkey` ON `User`;
-
--- AlterTable
-ALTER TABLE `Niveau` DROP COLUMN `competenceId`,
-    DROP COLUMN `description`,
-    DROP COLUMN `level`,
-    ADD COLUMN `name` VARCHAR(191) NOT NULL;
-
--- AlterTable
-ALTER TABLE `Promo` DROP COLUMN `createdAt`;
-
--- AlterTable
-ALTER TABLE `User` DROP COLUMN `createdAt`,
-    DROP COLUMN `profileId`,
-    ADD COLUMN `profilId` INTEGER NOT NULL,
-    ADD COLUMN `profilSortieId` INTEGER NULL;
-
--- DropTable
-DROP TABLE `Profile`;
-
--- DropTable
-DROP TABLE `_PromoToUser`;
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Profil` (
@@ -69,7 +23,35 @@ CREATE TABLE `ProfilSortie` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `User` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `profilId` INTEGER NOT NULL,
+    `profilSortieId` INTEGER NULL,
+
+    UNIQUE INDEX `User_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Promo` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Referentiel` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Competence` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
 
@@ -140,9 +122,18 @@ CREATE TABLE `PromoUser` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `userId` INTEGER NOT NULL,
     `promoId` INTEGER NOT NULL,
-    `role` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `PromoUser_userId_promoId_key`(`userId`, `promoId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `RefUser` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `referentielId` INTEGER NOT NULL,
+
+    UNIQUE INDEX `RefUser_userId_referentielId_key`(`userId`, `referentielId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -184,3 +175,9 @@ ALTER TABLE `PromoUser` ADD CONSTRAINT `PromoUser_userId_fkey` FOREIGN KEY (`use
 
 -- AddForeignKey
 ALTER TABLE `PromoUser` ADD CONSTRAINT `PromoUser_promoId_fkey` FOREIGN KEY (`promoId`) REFERENCES `Promo`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RefUser` ADD CONSTRAINT `RefUser_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RefUser` ADD CONSTRAINT `RefUser_referentielId_fkey` FOREIGN KEY (`referentielId`) REFERENCES `Referentiel`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
