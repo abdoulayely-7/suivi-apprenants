@@ -13,7 +13,7 @@ export class ProfileRepository {
         return this.prisma.profil.create({ data });
     }
     async update(id, data) {
-        return this.prisma.profil.update({ where: { id }, data });
+        return this.prisma.profil.update({ where: { id }, data: { ...data } });
     }
     async delete(id) {
         await this.prisma.profil.delete({ where: { id } });

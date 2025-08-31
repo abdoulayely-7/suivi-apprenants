@@ -1,13 +1,13 @@
-import {PrismaClient, Promo, User} from "@prisma/client";
-
 export class PromoRepository {
-    constructor(private prisma: PrismaClient) {}
-
-    async findFormateursByPromo(idPromo: number): Promise<User[]> {
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    async findFormateursByPromo(idPromo) {
         return this.prisma.user.findMany({
             where: {
                 promoUsers: {
-                    some: { promoId : idPromo }
+                    some: { promoId: idPromo }
                 },
                 profil: { name: "Formateur" }
             },
@@ -19,23 +19,20 @@ export class PromoRepository {
             }
         });
     }
-    async findAll(): Promise<Promo[]> {
+    async findAll() {
         return this.prisma.promo.findMany();
     }
-
-    async findById(id: number): Promise<Promo | null> {
+    async findById(id) {
         return this.prisma.promo.findUnique({ where: { id } });
     }
-
-    async create(data: Omit<Promo, "id">): Promise<Promo> {
+    async create(data) {
         return this.prisma.promo.create({ data });
     }
-
-    async update(id: number, data: Partial<Promo>): Promise<Promo> {
-        return this.prisma.promo.update({ where: { id }, data:{...data} });
+    async update(id, data) {
+        return this.prisma.promo.update({ where: { id }, data: { ...data } });
     }
-
-    async  delete(id: number): Promise<void> {
+    async delete(id) {
         await this.prisma.promo.delete({ where: { id } });
     }
 }
+//# sourceMappingURL=PromoRepository.js.map

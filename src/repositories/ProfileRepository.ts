@@ -2,10 +2,8 @@ import { PrismaClient, Profil } from "@prisma/client";
 import { IRepository } from "./IRepository.js";
 
 export class ProfileRepository implements IRepository<Profil>{
-    private prisma: PrismaClient;
 
-    constructor(prisma: PrismaClient) {
-        this.prisma = prisma;
+    constructor(private prisma: PrismaClient) {
     }
     async findAll(): Promise<Profil[]> {
         return this.prisma.profil.findMany();
@@ -20,7 +18,7 @@ export class ProfileRepository implements IRepository<Profil>{
     }
 
     async update(id: number, data: Partial<Profil>): Promise<Profil> {
-        return this.prisma.profil.update({ where: { id }, data });
+        return this.prisma.profil.update({ where: { id }, data:{...data} });
     }
 
     async  delete(id: number): Promise<void> {

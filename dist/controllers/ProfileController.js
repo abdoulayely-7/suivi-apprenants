@@ -35,8 +35,8 @@ export class ProfileController {
     static async update(req, res) {
         try {
             const id = Number(req.params.id);
-            const { name } = req.body;
-            const profile = await service.updateProfile(id, name);
+            const data = req.body;
+            const profile = await service.updateProfile(id, data);
             res.json(profile);
         }
         catch (error) {

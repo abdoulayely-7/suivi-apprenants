@@ -38,8 +38,8 @@ export class ProfileController {
     static async update(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
-            const { name } = req.body;
-            const profile = await service.updateProfile(id, name);
+            const data  = req.body;
+            const profile = await service.updateProfile(id, data);
             res.json(profile);
         } catch (error: any) {
             res.status(400).json({ error: error.message });

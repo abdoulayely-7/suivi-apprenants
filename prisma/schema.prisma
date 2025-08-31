@@ -61,7 +61,7 @@ model User {
 // =======================
 model Promo {
   id           Int         @id @default(autoincrement())
-  name         String      // ex: "P6", "P7"
+  name         String
   promoUsers   PromoUser[]
   promoRefs    PromoRef[]
 }

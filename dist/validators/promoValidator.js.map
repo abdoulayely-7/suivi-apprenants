@@ -1,0 +1,1 @@
+{"version":3,"file":"promoValidator.js","sourceRoot":"","sources":["../../src/validators/promoValidator.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,CAAC,EAAE,MAAM,KAAK,CAAC;AACxB,OAAO,EAAC,cAAc,EAAC,MAAM,qBAAqB,CAAC;AACnD,MAAM,CAAC,MAAM,iBAAiB,GAAG,CAAC,CAAC,MAAM,CAAC;IACtC,IAAI,EAAE,CAAC,CAAC,MAAM,EAAE,CAAC,GAAG,CAAC,CAAC,EAAI,cAAc,CAAC,gBAAgB,CAAC;CAC7D,CAAC,CAAC"}
