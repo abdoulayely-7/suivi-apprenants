@@ -5,6 +5,9 @@ import competenceRoutes from "./routes/competenceRoutes.js";
 import referentielRoutes from "./routes/referentielRoutes.js";
 import niveauRoute from "./routes/niveauRoute.js";
 import ProfilSortieRoutes from "./routes/ProfilSortieRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
+import useRoutes from "./routes/useRoutes.js";
+import tagRoutes from "./routes/tagRoutes.js";
 const app = express();
 app.use(express.json());
 app.use("/profiles", profileRoutes);
@@ -15,5 +18,7 @@ app.get("/", (_req, res) => res.send("API en ligne "));
 app.use("/referentiels", referentielRoutes);
 app.use("/niveaux", niveauRoute);
 app.use("/profilSorties", ProfilSortieRoutes);
+app.use("/users", useRoutes);
+app.use("/tags", tagRoutes);
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
 //# sourceMappingURL=index.js.map

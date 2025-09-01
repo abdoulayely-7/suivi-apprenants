@@ -10,5 +10,12 @@ export declare const ErreurMessages: {
     descriptionTooLong: string;
     missingProfilSortie: string;
     missingNiveauName: string;
+    missingUserName: string;
+    invalidEmail: string;
+    missingProfilId: string;
+    invalidProfilSortieId: string;
+    missingTagName: string;
+    tagNameTooShort: string;
+    tagNameTooLong: string;
 };
 //# sourceMappingURL=erreurMessages.d.ts.map

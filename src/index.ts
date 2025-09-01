@@ -3,6 +3,9 @@ import profileRoutes from "./routes/profilRoutes.js";
 import promoRoutes from "./routes/promoRoutes.js";
 import competenceRoutes from "./routes/competenceRoutes.js";
 import referentielRoutes from "./routes/referentielRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
+import useRoutes from "./routes/useRoutes.js"
+import tagRoutes from "./routes/tagRoutes.js"
 
 import niveauRoute from "./routes/niveauRoute.js";
 import ProfilSortieRoutes from "./routes/ProfilSortieRoutes.js"
@@ -18,3 +21,7 @@ app.use("/referentiels", referentielRoutes);
 app.use("/niveaux", niveauRoute);
 app.use("/profilSorties",ProfilSortieRoutes)
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+app.use("/users", useRoutes);
+app.use("/tags",tagRoutes);
+
+app.listen(3000, () =>   console.log("Server running on http://localhost:3000"));
