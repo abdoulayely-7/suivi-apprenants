@@ -17,4 +17,5 @@ export const ErreurMessages = {
     missingTagName: "Le nom du tag est obligatoire",
     tagNameTooShort: "Le nom du tag doit comporter au moins 2 caractères",
     tagNameTooLong: "Le nom du tag ne peut pas dépasser 50 caractères",
+    missingCompetenceName:"le nom de competence est obligatoire",
 }

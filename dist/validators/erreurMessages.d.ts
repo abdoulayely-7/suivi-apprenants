@@ -17,5 +17,6 @@ export declare const ErreurMessages: {
     missingTagName: string;
     tagNameTooShort: string;
     tagNameTooLong: string;
+    missingCompetenceName: string;
 };
 //# sourceMappingURL=erreurMessages.d.ts.map

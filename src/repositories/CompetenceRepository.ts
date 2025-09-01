@@ -78,7 +78,11 @@ export class CompetenceRepository implements IRepository<Competence> {
   async findNiveauxByCompetence(id: number) {
     return this.prisma.userCompetence.findMany({
       where: { competenceId: id },
-      include: { niveau: true }, 
+      
+      include: { 
+        niveau: true,
+        competence:true
+      }, 
     });
   }
 }
