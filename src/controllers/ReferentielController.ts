@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 const service = new ReferentielService(prisma);
 
 export class ReferentielController {
+    
     static async getAll(_req: Request, res: Response) {
         const referentiels = await service.getAllReferentiels();
         res.json(referentiels);
