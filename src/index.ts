@@ -5,7 +5,6 @@ import competenceRoutes from "./routes/competenceRoutes.js";
 import referentielRoutes from "./routes/referentielRoutes.js";
 import useRoutes from "./routes/useRoutes.js"
 import tagRoutes from "./routes/tagRoutes.js"
-
 import niveauRoute from "./routes/niveauRoute.js";
 import ProfilSortieRoutes from "./routes/ProfilSortieRoutes.js"
 const app = express();
