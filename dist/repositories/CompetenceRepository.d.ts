@@ -10,17 +10,17 @@ export declare class CompetenceRepository implements IRepository<Competence> {
     delete(id: number): Promise<void>;
     findNiveauxByCompetence(id: number): Promise<({
         competence: {
-            id: number;
             name: string;
+            id: number;
         };
         niveau: {
-            id: number;
             name: string;
+            id: number;
         };
     } & {
         id: number;
-        competenceId: number;
         userId: number;
+        competenceId: number;
         niveauId: number;
     })[]>;
 }
