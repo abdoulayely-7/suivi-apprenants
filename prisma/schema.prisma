@@ -7,40 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// =======================
-// 1. Niveaux
-// =======================
-// Représente un niveau d'évaluation pour une compétence (N1, N2, N3)
+
 model Niveau {
   id    Int    @id @default(autoincrement())
   name  String
 
-  userCompetences UserCompetence[] // relation avec UserCompetence
+  userCompetences UserCompetence[]
 }
 
-// =======================
-// 2. Profils
-// =======================
-// Catégories de comptes : Admin, Formateur, Apprenant, CM
+
+
 model Profil {
   id    Int    @id @default(autoincrement())
   name  String
   users User[]
 }
 
-// =======================
-// 3. Profil de sortie
-// =======================
-// Profil final d'un apprenant : Dev Front, Dev Back, etc.
+
 model ProfilSortie {
   id    Int    @id @default(autoincrement())
   name  String
   users User[]
 }
 
-// =======================
-// 4. Users
-// =======================
+
 model User {
   id             Int          @id @default(autoincrement())
   name           String
@@ -56,9 +46,7 @@ model User {
 
 }
 
-// =======================
-// 5. Promos
-// =======================
+
 model Promo {
   id           Int         @id @default(autoincrement())
   name         String
@@ -66,9 +54,7 @@ model Promo {
   promoRefs    PromoRef[]
 }
 
-// =======================
-// 6. Référentiels
-// =======================
+
 model Referentiel {
   id        Int         @id @default(autoincrement())
   name      String
@@ -77,9 +63,7 @@ model Referentiel {
   refCompetences RefCompetence[]
 }
 
-// =======================
-// 7. Compétences
-// =======================
+
 model Competence {
   id             Int             @id @default(autoincrement())
   name           String
@@ -87,18 +71,14 @@ model Competence {
   userCompetences UserCompetence[]
 }
 
-// =======================
-// 8. Tags
-// =======================
+
 model Tag {
   id     Int      @id @default(autoincrement())
   name   String   @unique
   briefTags BriefTag[]
 }
 
-// =======================
-// 9. Briefs
-// =======================
+
 model Brief {
   id        Int      @id @default(autoincrement())
   title     String
@@ -106,7 +86,6 @@ model Brief {
   briefTags BriefTag[]
 }
 
-// Table de liaison Brief ↔ Tag
 model BriefTag {
   id      Int   @id @default(autoincrement())
   briefId Int
@@ -118,11 +97,7 @@ model BriefTag {
   @@unique([briefId, tagId])
 }
 
-// =======================
-// 10. Tables de liaison
-// =======================
 
-// Promo ↔ Référentiel (une promo peut avoir plusieurs référentiels)
 model PromoRef {
   id            Int         @id @default(autoincrement())
   promoId       Int
@@ -134,7 +109,6 @@ model PromoRef {
   @@unique([promoId, referentielId])
 }
 
-// Référentiel ↔ Compétence (une compétence peut appartenir à plusieurs référentiels)
 model RefCompetence {
   id            Int          @id @default(autoincrement())
   referentielId Int
@@ -146,7 +120,6 @@ model RefCompetence {
   @@unique([referentielId, competenceId])
 }
 
-// User ↔ Compétence avec Niveau
 model UserCompetence {
   id           Int       @id @default(autoincrement())
   userId       Int
@@ -157,10 +130,9 @@ model UserCompetence {
   competence  Competence @relation(fields: [competenceId], references: [id])
   niveau      Niveau     @relation(fields: [niveauId], references: [id])
 
-  @@unique([userId, competenceId]) // un user ne peut avoir la même compétence qu'une seule fois
+  @@unique([userId, competenceId])
 }
 
-// User ↔ Promo (apprenant ou formateur)
 model PromoUser {
   id       Int   @id @default(autoincrement())
   userId   Int
