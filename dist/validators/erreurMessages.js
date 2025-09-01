@@ -9,7 +9,7 @@ export const ErreurMessages = {
     invalidDescription: "La description doit être une chaîne de caractères",
     descriptionTooLong: "La description ne doit pas dépasser 200 caractères",
     missingProfilSortie: "le nom de ProfilSortie est obligatoire",
-    missingNiveauName: "Le nom du niveau est obligatoire"
+    missingNiveauName: "Le nom du niveau est obligatoire",
     missingUserName: "Le nom de l'utilisateur est obligatoire",
     invalidEmail: "L'email est invalide",
     missingProfilId: "Le profil de l'utilisateur est obligatoire",
