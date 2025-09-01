@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { CompetenceService } from "../services/CompetenceService.js";
-import { CreateCompetenceSchema } from "../validators/profileValidator.js";
+import { CreateCompetenceSchema } from "../validators/CompetenceValidator.js";
 const prisma = new PrismaClient();
 const service = new CompetenceService(prisma);
 export class CompetenceController {
