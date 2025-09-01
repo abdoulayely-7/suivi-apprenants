@@ -33,7 +33,12 @@ export class UserRepository {
         return this.prisma.user.update({ where: { id }, data });
     }
     async delete(id) {
-        await this.prisma.user.delete({ where: { id } });
+        await this.prisma.$transaction([
+            this.prisma.promoUser.deleteMany({ where: { userId: id } }),
+            this.prisma.refUser.deleteMany({ where: { userId: id } }),
+            this.prisma.userCompetence.deleteMany({ where: { userId: id } }),
+            this.prisma.user.delete({ where: { id } }),
+        ]);
     }
 }
 //# sourceMappingURL=UserRepository.js.map

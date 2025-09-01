@@ -44,7 +44,12 @@ export class UserRepository implements IRepository<User> {
         return this.prisma.user.update({ where: { id }, data });
     }
 
-    async delete(id: number): Promise<void> {
-        await this.prisma.user.delete({ where: { id } });
-    }
+ async delete(id: number): Promise<void> {
+    await this.prisma.$transaction([
+        this.prisma.promoUser.deleteMany({ where: { userId: id } }),
+        this.prisma.refUser.deleteMany({ where: { userId: id } }),
+        this.prisma.userCompetence.deleteMany({ where: { userId: id } }),
+        this.prisma.user.delete({ where: { id } }),
+    ]);
+}
 }
