@@ -25,10 +25,17 @@ export class ReferentielRepository implements IRepository<Referentiel> {
     }
 
     async delete(id: number): Promise<void> {
+        const usersCount = await this.prisma.refUser.count({
+            where: { referentielId: id }
+        });
+
+        if (usersCount > 0) {
+            throw new Error("Impossible de supprimer ce référentiel car il est associé à des utilisateurs");
+        }
+
         await this.prisma.$transaction([
             this.prisma.refCompetence.deleteMany({ where: { referentielId: id } }),
             this.prisma.promoRef.deleteMany({ where: { referentielId: id } }),
-            this.prisma.refUser.deleteMany({ where: { referentielId: id } }),
             this.prisma.referentiel.delete({ where: { id } })
         ]);
     }
