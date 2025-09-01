@@ -25,5 +25,8 @@ export class ReferentielService {
     async addCompetenceToReferentiel(referentielId, competenceId) {
         return this.repo.addCompetenceToReferentiel(referentielId, competenceId);
     }
+    async addCompetencesToReferentiel(referentielId, competenceIds) {
+        return this.repo.addCompetencesToReferentiel(referentielId, competenceIds);
+    }
 }
 //# sourceMappingURL=ReferentielService.js.map

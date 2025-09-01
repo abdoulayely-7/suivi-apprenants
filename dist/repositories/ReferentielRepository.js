@@ -4,7 +4,23 @@ export class ReferentielRepository {
         this.prisma = prisma;
     }
     async findAll() {
-        return this.prisma.referentiel.findMany();
+        const referentiels = await this.prisma.referentiel.findMany({
+            include: {
+                refCompetences: {
+                    include: {
+                        competence: true
+                    }
+                }
+            }
+        });
+        return referentiels.map(ref => ({
+            id: ref.id,
+            name: ref.name,
+            competences: ref.refCompetences.map(rc => ({
+                id: rc.competence.id,
+                name: rc.competence.name
+            }))
+        }));
     }
     async findById(id) {
         return this.prisma.referentiel.findUnique({ where: { id } });
@@ -47,6 +63,16 @@ export class ReferentielRepository {
                 referentielId,
                 competenceId
             }
+        });
+    }
+    async addCompetencesToReferentiel(referentielId, competenceIds) {
+        const data = competenceIds.map(competenceId => ({
+            referentielId,
+            competenceId
+        }));
+        await this.prisma.refCompetence.createMany({
+            data,
+            skipDuplicates: true
         });
     }
 }
