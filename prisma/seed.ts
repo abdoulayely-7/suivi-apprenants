@@ -72,7 +72,7 @@ async function main() {
 
     // Référentiel ↔ Compétence
     await prisma.refCompetence.create({ data: { referentielId: refDevWeb.id, competenceId: competenceHTML.id } });
-    await prisma.refCompetence.create({ data: { referentielId: refDevWeb.id, competenceId: competenceCSS.id } });
+    await prisma.refCompetence.create({ data: { referentielId: refDevWeb.id, competenceId: competenceCSS.id } }); 
 
     // =======================
     // 10. Niveaux
