@@ -1,140 +1,141 @@
 -- CreateTable
 CREATE TABLE `Niveau` (
-                          `id` INTEGER NOT NULL AUTO_INCREMENT,
-                          `name` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
 
-                          PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Profil` (
-                          `id` INTEGER NOT NULL AUTO_INCREMENT,
-                          `name` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
 
-                          PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `ProfilSortie` (
-                                `id` INTEGER NOT NULL AUTO_INCREMENT,
-                                `name` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
 
-                                PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `User` (
-                        `id` INTEGER NOT NULL AUTO_INCREMENT,
-                        `name` VARCHAR(191) NOT NULL,
-                        `email` VARCHAR(191) NOT NULL,
-                        `profilId` INTEGER NOT NULL,
-                        `profilSortieId` INTEGER NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `password` VARCHAR(191) NOT NULL,
+    `profilId` INTEGER NOT NULL,
+    `profilSortieId` INTEGER NULL,
 
-                        UNIQUE INDEX `User_email_key`(`email`),
-                        PRIMARY KEY (`id`)
+    UNIQUE INDEX `User_email_key`(`email`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Promo` (
-                         `id` INTEGER NOT NULL AUTO_INCREMENT,
-                         `name` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
 
-                         PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Referentiel` (
-                               `id` INTEGER NOT NULL AUTO_INCREMENT,
-                               `name` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
 
-                               PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Competence` (
-                              `id` INTEGER NOT NULL AUTO_INCREMENT,
-                              `name` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
 
-                              PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Tag` (
-                       `id` INTEGER NOT NULL AUTO_INCREMENT,
-                       `name` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
 
-                       UNIQUE INDEX `Tag_name_key`(`name`),
-                       PRIMARY KEY (`id`)
+    UNIQUE INDEX `Tag_name_key`(`name`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Brief` (
-                         `id` INTEGER NOT NULL AUTO_INCREMENT,
-                         `title` VARCHAR(191) NOT NULL,
-                         `content` VARCHAR(191) NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(191) NOT NULL,
+    `content` VARCHAR(191) NOT NULL,
 
-                         PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `BriefTag` (
-                            `id` INTEGER NOT NULL AUTO_INCREMENT,
-                            `briefId` INTEGER NOT NULL,
-                            `tagId` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `briefId` INTEGER NOT NULL,
+    `tagId` INTEGER NOT NULL,
 
-                            UNIQUE INDEX `BriefTag_briefId_tagId_key`(`briefId`, `tagId`),
-                            PRIMARY KEY (`id`)
+    UNIQUE INDEX `BriefTag_briefId_tagId_key`(`briefId`, `tagId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `PromoRef` (
-                            `id` INTEGER NOT NULL AUTO_INCREMENT,
-                            `promoId` INTEGER NOT NULL,
-                            `referentielId` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `promoId` INTEGER NOT NULL,
+    `referentielId` INTEGER NOT NULL,
 
-                            UNIQUE INDEX `PromoRef_promoId_referentielId_key`(`promoId`, `referentielId`),
-                            PRIMARY KEY (`id`)
+    UNIQUE INDEX `PromoRef_promoId_referentielId_key`(`promoId`, `referentielId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `RefCompetence` (
-                                 `id` INTEGER NOT NULL AUTO_INCREMENT,
-                                 `referentielId` INTEGER NOT NULL,
-                                 `competenceId` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `referentielId` INTEGER NOT NULL,
+    `competenceId` INTEGER NOT NULL,
 
-                                 UNIQUE INDEX `RefCompetence_referentielId_competenceId_key`(`referentielId`, `competenceId`),
-                                 PRIMARY KEY (`id`)
+    UNIQUE INDEX `RefCompetence_referentielId_competenceId_key`(`referentielId`, `competenceId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `UserCompetence` (
-                                  `id` INTEGER NOT NULL AUTO_INCREMENT,
-                                  `userId` INTEGER NOT NULL,
-                                  `competenceId` INTEGER NOT NULL,
-                                  `niveauId` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `competenceId` INTEGER NOT NULL,
+    `niveauId` INTEGER NOT NULL,
 
-                                  UNIQUE INDEX `UserCompetence_userId_competenceId_key`(`userId`, `competenceId`),
-                                  PRIMARY KEY (`id`)
+    UNIQUE INDEX `UserCompetence_userId_competenceId_key`(`userId`, `competenceId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `PromoUser` (
-                             `id` INTEGER NOT NULL AUTO_INCREMENT,
-                             `userId` INTEGER NOT NULL,
-                             `promoId` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `promoId` INTEGER NOT NULL,
 
-                             UNIQUE INDEX `PromoUser_userId_promoId_key`(`userId`, `promoId`),
-                             PRIMARY KEY (`id`)
+    UNIQUE INDEX `PromoUser_userId_promoId_key`(`userId`, `promoId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `RefUser` (
-                           `id` INTEGER NOT NULL AUTO_INCREMENT,
-                           `userId` INTEGER NOT NULL,
-                           `referentielId` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `referentielId` INTEGER NOT NULL,
 
-                           UNIQUE INDEX `RefUser_userId_referentielId_key`(`userId`, `referentielId`),
-                           PRIMARY KEY (`id`)
+    UNIQUE INDEX `RefUser_userId_referentielId_key`(`userId`, `referentielId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey

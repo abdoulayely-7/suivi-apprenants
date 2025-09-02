@@ -1,12 +1,20 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient, User , Profil, ProfilSortie} from "@prisma/client";
 import { IRepository } from "./IRepository.js";
+import bcrypt from "bcrypt";
 
+
+export type UserWithRelations = User & {
+    profil?: Profil;
+    profilSortie?: ProfilSortie;
+};
 export class UserRepository implements IRepository<User> {
     private prisma: PrismaClient;
 
     constructor(prisma: PrismaClient) {
         this.prisma = prisma;
     }
+
+    
 
     async findAll(): Promise<User[]> {
         return this.prisma.user.findMany({
@@ -52,4 +60,35 @@ export class UserRepository implements IRepository<User> {
         this.prisma.user.delete({ where: { id } }),
     ]);
 }
+
+
+// async findByEmail(email: string): Promise<User | null> {
+//         return this.prisma.user.findUnique({
+//             where: { email },
+//             include: {
+//                 profil: true,
+//                 profilSortie: true,
+//                 promoUsers: { include: { promo: true } },
+//                 RefUser: { include: { referentiel: true } },
+//                 userCompetences: { include: { competence: true, niveau: true } },
+//             },
+//         });
+//     }
+
+ async findByEmail(email: string): Promise<User | null> {
+        return this.prisma.user.findUnique({
+            where: { email },
+            include: {
+                profil: true,
+                profilSortie: true,
+                promoUsers: { include: { promo: true } },
+                RefUser: { include: { referentiel: true } },
+                userCompetences: { include: { competence: true, niveau: true } },
+            },
+        })as Promise<UserWithRelations | null>;;
+    }
+
+    async verifyPassword(user: User, password: string): Promise<boolean> {
+        return bcrypt.compare(password, user.password);
+    }
 }

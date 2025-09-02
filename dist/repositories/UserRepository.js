@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 export class UserRepository {
     prisma;
     constructor(prisma) {
@@ -39,6 +40,34 @@ export class UserRepository {
             this.prisma.userCompetence.deleteMany({ where: { userId: id } }),
             this.prisma.user.delete({ where: { id } }),
         ]);
+    }
+    // async findByEmail(email: string): Promise<User | null> {
+    //         return this.prisma.user.findUnique({
+    //             where: { email },
+    //             include: {
+    //                 profil: true,
+    //                 profilSortie: true,
+    //                 promoUsers: { include: { promo: true } },
+    //                 RefUser: { include: { referentiel: true } },
+    //                 userCompetences: { include: { competence: true, niveau: true } },
+    //             },
+    //         });
+    //     }
+    async findByEmail(email) {
+        return this.prisma.user.findUnique({
+            where: { email },
+            include: {
+                profil: true,
+                profilSortie: true,
+                promoUsers: { include: { promo: true } },
+                RefUser: { include: { referentiel: true } },
+                userCompetences: { include: { competence: true, niveau: true } },
+            },
+        });
+        ;
+    }
+    async verifyPassword(user, password) {
+        return bcrypt.compare(password, user.password);
     }
 }
 //# sourceMappingURL=UserRepository.js.map
