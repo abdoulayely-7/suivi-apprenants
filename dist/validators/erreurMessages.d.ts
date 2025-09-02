@@ -18,5 +18,10 @@ export declare const ErreurMessages: {
     tagNameTooShort: string;
     tagNameTooLong: string;
     missingCompetenceName: string;
+    EmailAndPassword: string;
+    IVALID: string;
+    NOREFRESHTOKEN: string;
+    USERINVALID: string;
+    REFRESHTOKENINVALID: string;
 };
 //# sourceMappingURL=erreurMessages.d.ts.map

@@ -18,5 +18,10 @@ export const ErreurMessages = {
     tagNameTooShort: "Le nom du tag doit comporter au moins 2 caractères",
     tagNameTooLong: "Le nom du tag ne peut pas dépasser 50 caractères",
     missingCompetenceName: "le nom de competence est obligatoire",
+    EmailAndPassword: "Email et mot de passe requis",
+    IVALID: "Identifiants invalides",
+    NOREFRESHTOKEN: "Refresh token requis",
+    USERINVALID: "Utilisateur introuvable",
+    REFRESHTOKENINVALID: "Refresh token invalide",
 };
 //# sourceMappingURL=erreurMessages.js.map
