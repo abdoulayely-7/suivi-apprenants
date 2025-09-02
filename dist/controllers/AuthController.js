@@ -6,7 +6,6 @@ export class AuthController {
     constructor(userService) {
         this.userService = userService;
     }
-    // --- POST /auth/login ---
     async login(req, res) {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -24,7 +23,6 @@ export class AuthController {
         const refreshToken = jwt.sign({ userId: user.id }, REFRESH_SECRET, { expiresIn: "7d" });
         return res.status(200).json({ accessToken, refreshToken });
     }
-    // --- POST /auth/refresh ---
     async refresh(req, res) {
         const { refreshToken } = req.body;
         if (!refreshToken) {
