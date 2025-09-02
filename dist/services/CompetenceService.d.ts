@@ -9,17 +9,17 @@ export declare class CompetenceService {
     deleteCompetence(id: number): Promise<void>;
     getNiveauxForCompetence(id: number): Promise<({
         competence: {
-            name: string;
             id: number;
+            name: string;
         };
         niveau: {
-            name: string;
             id: number;
+            name: string;
         };
     } & {
         id: number;
-        userId: number;
         competenceId: number;
+        userId: number;
         niveauId: number;
     })[]>;
 }
