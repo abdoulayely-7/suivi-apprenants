@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import { UserService } from "../services/UserService.js";
 import { UserWithRelations } from "../repositories/UserRepository.js";
-
-const JWT_SECRET = process.env.JWT_SECRET || "secret";
-const REFRESH_SECRET = process.env.REFRESH_SECRET || "refreshSecret";
+import { ErreurMessages } from "../validators/erreurMessages.js";
+import { StatusCodes } from "../validators/statusCodes.js";
+import { TokenService } from "../services/TokenService.js"; // <-- import
 
 export class AuthController {
     private userService: UserService;
@@ -13,63 +12,75 @@ export class AuthController {
         this.userService = userService;
     }
 
- 
     async login(req: Request, res: Response): Promise<Response> {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).json({ message: "Email et mot de passe requis" });
+            return res.status(StatusCodes.BAD_REQUEST).json({ 
+                code: StatusCodes.BAD_REQUEST,
+                message: ErreurMessages.EmailAndPassword 
+            });
         }
 
         const user: UserWithRelations | null = await this.userService.findByEmail(email);
         if (!user) {
-            return res.status(401).json({ message: "Identifiants invalides" });
+            return res.status(StatusCodes.UNAUTHORIZED).json({ 
+                code: StatusCodes.UNAUTHORIZED,
+                message: ErreurMessages.IVALID 
+            });
         }
 
         const valid = await this.userService.verifyPassword(user, password);
         if (!valid) {
-            return res.status(401).json({ message: "Identifiants invalides" });
+            return res.status(StatusCodes.UNAUTHORIZED).json({ 
+                code: StatusCodes.UNAUTHORIZED,
+                message: ErreurMessages.IVALID 
+            });
         }
 
-        const accessToken = jwt.sign(
-            { userId: user.id, role: user.profil?.name },
-            JWT_SECRET,
-            { expiresIn: "1h" }
-        );
+        // Utilisation de TokenService pour générer les tokens
+        const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
+        const refreshToken = TokenService.generateRefreshToken({ userId: user.id });
 
-        const refreshToken = jwt.sign(
-            { userId: user.id },
-            REFRESH_SECRET,
-            { expiresIn: "7d" }
-        );
-
-        return res.status(200).json({ accessToken, refreshToken });
+        return res.status(StatusCodes.SUCCESS).json({ 
+            code: StatusCodes.SUCCESS,
+            accessToken, 
+            refreshToken 
+        });
     }
 
-   
     async refresh(req: Request, res: Response): Promise<Response> {
         const { refreshToken } = req.body;
         if (!refreshToken) {
-            return res.status(400).json({ message: "Refresh token requis" });
+            return res.status(StatusCodes.BAD_REQUEST).json({ 
+                code: StatusCodes.BAD_REQUEST,
+                message: ErreurMessages.NOREFRESHTOKEN 
+            });
         }
 
         try {
-            const payload = jwt.verify(refreshToken, REFRESH_SECRET) as { userId: number };
+            // Vérification avec TokenService
+            const payload = TokenService.verifyRefreshToken<{ userId: number }>(refreshToken);
             const user: UserWithRelations | null = await this.userService.findById(payload.userId);
 
             if (!user) {
-                return res.status(401).json({ message: "Utilisateur introuvable" });
+                return res.status(StatusCodes.UNAUTHORIZED).json({ 
+                    code: StatusCodes.UNAUTHORIZED,
+                    message: ErreurMessages.USERINVALID 
+                });
             }
 
-            const accessToken = jwt.sign(
-                { userId: user.id, role: user.profil?.name },
-                JWT_SECRET,
-                { expiresIn: "1h" }
-            );
+            const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
 
-            return res.status(200).json({ accessToken });
+            return res.status(StatusCodes.SUCCESS).json({ 
+                code: StatusCodes.SUCCESS,
+                accessToken 
+            });
         } catch {
-            return res.status(401).json({ message: "Refresh token invalide" });
+            return res.status(StatusCodes.UNAUTHORIZED).json({ 
+                code: StatusCodes.UNAUTHORIZED,
+                message: ErreurMessages.REFRESHTOKENINVALID 
+            });
         }
     }
 }
