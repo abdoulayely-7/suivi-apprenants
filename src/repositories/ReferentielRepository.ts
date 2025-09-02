@@ -8,8 +8,25 @@ export class ReferentielRepository implements IRepository<Referentiel> {
         this.prisma = prisma;
     }
 
-    async findAll(): Promise<Referentiel[]> {
-        return this.prisma.referentiel.findMany();
+    async findAll(): Promise<any[]> {
+        const referentiels = await this.prisma.referentiel.findMany({
+            include: {
+                refCompetences: {
+                    include: {
+                        competence: true
+                    }
+                }
+            }
+        });
+
+        return referentiels.map(ref => ({
+            id: ref.id,
+            name: ref.name,
+            competences: ref.refCompetences.map(rc => ({
+                id: rc.competence.id,
+                name: rc.competence.name
+            }))
+        }));
     }
 
     async findById(id: number): Promise<Referentiel | null> {
@@ -61,6 +78,18 @@ export class ReferentielRepository implements IRepository<Referentiel> {
                 referentielId,
                 competenceId
             }
+        });
+    }
+
+    async addCompetencesToReferentiel(referentielId: number, competenceIds: number[]): Promise<void> {
+        const data = competenceIds.map(competenceId => ({
+            referentielId,
+            competenceId
+        }));
+
+        await this.prisma.refCompetence.createMany({
+            data,
+            skipDuplicates: true
         });
     }
 }
