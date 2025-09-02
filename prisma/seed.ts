@@ -1,9 +1,19 @@
 // prisma/seed.ts
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 async function main() {
+
+     // =======================
+    // Hash des mots de passe
+    // =======================
+    const hashedAdminPwd = await bcrypt.hash("admin123", 10);
+    const hashedFormateurPwd = await bcrypt.hash("formateur123", 10);
+    const hashedApprenantPwd = await bcrypt.hash("apprenant123", 10);
+
+
     console.log(" Début du seed...");
 
     // =======================
@@ -21,15 +31,43 @@ async function main() {
 // =======================
     // 3. Utilisateurs
     // =======================
-    await prisma.user.create({
-        data: { name: "Admin Principal", email: "admin@ecsa.com", profilId: adminProfil.id }
+    // await prisma.user.create({
+    //     data: { name: "Admin Principal", email: "admin@ecsa.com", profilId: adminProfil.id }
+    // });
+    // const formateur1 = await prisma.user.create({
+    //     data: { name: "Formateur 1", email: "formateur1@ecsa.com", profilId: formateurProfil.id }
+    // });
+
+    // const apprenant1 = await prisma.user.create({
+    //     data: { name: "Apprenant 1", email: "apprenant1@ecsa.com", profilId: apprenantProfil.id, profilSortieId: devWebSortie.id }
+    // });
+
+       const admin = await prisma.user.create({
+        data: { 
+            name: "Admin Principal", 
+            email: "admin@ecsa.com", 
+            password: hashedAdminPwd,
+            profilId: adminProfil.id 
+        }
     });
+
     const formateur1 = await prisma.user.create({
-        data: { name: "Formateur 1", email: "formateur1@ecsa.com", profilId: formateurProfil.id }
+        data: { 
+            name: "Formateur 1", 
+            email: "formateur1@ecsa.com", 
+            password: hashedFormateurPwd,
+            profilId: formateurProfil.id 
+        }
     });
 
     const apprenant1 = await prisma.user.create({
-        data: { name: "Apprenant 1", email: "apprenant1@ecsa.com", profilId: apprenantProfil.id, profilSortieId: devWebSortie.id }
+        data: { 
+            name: "Apprenant 1", 
+            email: "apprenant1@ecsa.com", 
+            password: hashedApprenantPwd,
+            profilId: apprenantProfil.id, 
+            profilSortieId: devWebSortie.id 
+        }
     });
 
     // =======================
