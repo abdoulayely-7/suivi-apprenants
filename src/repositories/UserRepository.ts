@@ -1,12 +1,15 @@
-import { PrismaClient, User , Profil, ProfilSortie} from "@prisma/client";
+import { PrismaClient, User} from "@prisma/client";
+import { UserWithRelations } from "../types/UserWithRelations.js";
 import { IRepository } from "./IRepository.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcrypt"; 
 
 
-export type UserWithRelations = User & {
-    profil?: Profil;
-    profilSortie?: ProfilSortie;
-};
+// export type UserWithRelations = User & {
+//     profil?: Profil;
+//     profilSortie?: ProfilSortie;
+// };
+
+
 export class UserRepository implements IRepository<User> {
     private prisma: PrismaClient;
 
