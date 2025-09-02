@@ -1,3 +1,4 @@
+
 export const ErreurMessages = {
     missingProfileName: "Le nom du profil est obligatoire",
     missingPromoName: "Le nom de la promo est obligatoire",
@@ -18,4 +19,9 @@ export const ErreurMessages = {
     tagNameTooShort: "Le nom du tag doit comporter au moins 2 caractères",
     tagNameTooLong: "Le nom du tag ne peut pas dépasser 50 caractères",
     missingCompetenceName:"le nom de competence est obligatoire",
+    emailrequired:"Email et mot de passe requis",
+    invalidIdentifiants:"Identifiants invalides",
+    tokenRequired:"Refresh token requis" ,
+    introuvableUser:"Utilisateur introuvable",
+    refreshInvalid:"Refresh token invalide",
 }

@@ -7,15 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Niveau {
-  id    Int    @id @default(autoincrement())
-  name  String
-
+  id              Int              @id @default(autoincrement())
+  name            String
   userCompetences UserCompetence[]
 }
-
-
 
 model Profil {
   id    Int    @id @default(autoincrement())
@@ -23,65 +19,59 @@ model Profil {
   users User[]
 }
 
-
 model ProfilSortie {
   id    Int    @id @default(autoincrement())
   name  String
   users User[]
 }
 
-
 model User {
-  id             Int          @id @default(autoincrement())
-  name           String
-  email          String       @unique
-  password       String
-  profilId       Int
-  profilSortieId Int?         // facultatif pour formateurs/admin
-  promoUsers     PromoUser[]
-  RefUser RefUser[]
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String           @unique
+  password        String
+  profilId        Int
+  profilSortieId  Int?
+  promoUsers      PromoUser[]
+  RefUser         RefUser[]
+  profil          Profil           @relation(fields: [profilId], references: [id])
+  profilSortie    ProfilSortie?    @relation(fields: [profilSortieId], references: [id])
   userCompetences UserCompetence[]
 
-  profil        Profil         @relation(fields: [profilId], references: [id])
-  profilSortie  ProfilSortie?  @relation(fields: [profilSortieId], references: [id])
-
+  @@index([profilId], map: "User_profilId_fkey")
+  @@index([profilSortieId], map: "User_profilSortieId_fkey")
 }
-
 
 model Promo {
-  id           Int         @id @default(autoincrement())
-  name         String
-  promoUsers   PromoUser[]
-  promoRefs    PromoRef[]
+  id         Int         @id @default(autoincrement())
+  name       String
+  promoRefs  PromoRef[]
+  promoUsers PromoUser[]
 }
-
 
 model Referentiel {
-  id        Int         @id @default(autoincrement())
-  name      String
-  promoRefs PromoRef[]
-  RefUser RefUser[]
-  refCompetences RefCompetence[]
-}
-
-
-model Competence {
   id             Int             @id @default(autoincrement())
   name           String
+  promoRefs      PromoRef[]
   refCompetences RefCompetence[]
+  RefUser        RefUser[]
+}
+
+model Competence {
+  id              Int              @id @default(autoincrement())
+  name            String
+  refCompetences  RefCompetence[]
   userCompetences UserCompetence[]
 }
 
-
 model Tag {
-  id     Int      @id @default(autoincrement())
-  name   String   @unique
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
   briefTags BriefTag[]
 }
 
-
 model Brief {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   title     String
   content   String
   briefTags BriefTag[]
@@ -91,66 +81,67 @@ model BriefTag {
   id      Int   @id @default(autoincrement())
   briefId Int
   tagId   Int
-
-  brief Brief @relation(fields: [briefId], references: [id])
-  tag   Tag   @relation(fields: [tagId], references: [id])
+  brief   Brief @relation(fields: [briefId], references: [id])
+  tag     Tag   @relation(fields: [tagId], references: [id])
 
   @@unique([briefId, tagId])
+  @@index([tagId], map: "BriefTag_tagId_fkey")
 }
-
 
 model PromoRef {
   id            Int         @id @default(autoincrement())
   promoId       Int
   referentielId Int
-
-  promo        Promo        @relation(fields: [promoId], references: [id])
-  referentiel  Referentiel  @relation(fields: [referentielId], references: [id])
+  promo         Promo       @relation(fields: [promoId], references: [id])
+  referentiel   Referentiel @relation(fields: [referentielId], references: [id])
 
   @@unique([promoId, referentielId])
+  @@index([referentielId], map: "PromoRef_referentielId_fkey")
 }
 
 model RefCompetence {
-  id            Int          @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   referentielId Int
   competenceId  Int
-
-  referentiel   Referentiel  @relation(fields: [referentielId], references: [id])
-  competence    Competence   @relation(fields: [competenceId], references: [id])
+  competence    Competence  @relation(fields: [competenceId], references: [id])
+  referentiel   Referentiel @relation(fields: [referentielId], references: [id])
 
   @@unique([referentielId, competenceId])
+  @@index([competenceId], map: "RefCompetence_competenceId_fkey")
 }
 
 model UserCompetence {
-  id           Int       @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   userId       Int
   competenceId Int
   niveauId     Int
-
-  user        User       @relation(fields: [userId], references: [id])
-  competence  Competence @relation(fields: [competenceId], references: [id])
-  niveau      Niveau     @relation(fields: [niveauId], references: [id])
+  competence   Competence @relation(fields: [competenceId], references: [id])
+  niveau       Niveau     @relation(fields: [niveauId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
 
   @@unique([userId, competenceId])
+  @@index([competenceId], map: "UserCompetence_competenceId_fkey")
+  @@index([niveauId], map: "UserCompetence_niveauId_fkey")
 }
 
 model PromoUser {
-  id       Int   @id @default(autoincrement())
-  userId   Int
-  promoId  Int
-  user     User  @relation(fields: [userId], references: [id])
-  promo    Promo @relation(fields: [promoId], references: [id])
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  promoId Int
+  promo   Promo @relation(fields: [promoId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
 
   @@unique([userId, promoId])
+  @@index([promoId], map: "PromoUser_promoId_fkey")
 }
+
 model RefUser {
   id            Int         @id @default(autoincrement())
   userId        Int
-  referentielId  Int
-  user          User        @relation(fields: [userId], references: [id])
+  referentielId Int
   referentiel   Referentiel @relation(fields: [referentielId], references: [id])
+  user          User        @relation(fields: [userId], references: [id])
 
   @@unique([userId, referentielId])
+  @@index([referentielId], map: "RefUser_referentielId_fkey")
 }
-
-

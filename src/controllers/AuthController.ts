@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { UserService } from "../services/UserService.js";
 import { UserWithRelations } from "../repositories/UserRepository.js";
+import { StatusCodes } from "../validators/StatusCodes.js";
+import { ErreurMessages } from "../validators/erreurMessages.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 const REFRESH_SECRET = process.env.REFRESH_SECRET || "refreshSecret";
@@ -18,17 +20,24 @@ export class AuthController {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).json({ message: "Email et mot de passe requis" });
+            return res.status(StatusCodes.BAD_REQUEST).json({ 
+                code:StatusCodes.BAD_REQUEST,
+                message: ErreurMessages.emailrequired });
+
         }
 
         const user: UserWithRelations | null = await this.userService.findByEmail(email);
         if (!user) {
-            return res.status(401).json({ message: "Identifiants invalides" });
+            return res.status(StatusCodes.UNAUTHORIZED).json({ 
+                code:StatusCodes.UNAUTHORIZED,
+                message: ErreurMessages.invalidIdentifiants });
         }
 
         const valid = await this.userService.verifyPassword(user, password);
         if (!valid) {
-            return res.status(401).json({ message: "Identifiants invalides" });
+            return res.status(StatusCodes.UNAUTHORIZED,).json({ 
+                code:StatusCodes.UNAUTHORIZED,
+                message: ErreurMessages.invalidIdentifiants});
         }
 
         const accessToken = jwt.sign(
@@ -43,14 +52,18 @@ export class AuthController {
             { expiresIn: "7d" }
         );
 
-        return res.status(200).json({ accessToken, refreshToken });
+        return res.status(StatusCodes.SUCCESS).json({ 
+            code:StatusCodes.SUCCESS,
+            accessToken, refreshToken });
     }
 
    
     async refresh(req: Request, res: Response): Promise<Response> {
         const { refreshToken } = req.body;
         if (!refreshToken) {
-            return res.status(400).json({ message: "Refresh token requis" });
+            return res.status(StatusCodes.BAD_REQUEST).json({ 
+                code:StatusCodes.BAD_REQUEST,
+                message: ErreurMessages.tokenRequired});
         }
 
         try {
@@ -58,7 +71,9 @@ export class AuthController {
             const user: UserWithRelations | null = await this.userService.findById(payload.userId);
 
             if (!user) {
-                return res.status(401).json({ message: "Utilisateur introuvable" });
+                return res.status(StatusCodes.UNAUTHORIZED).json({ 
+                    code:StatusCodes.UNAUTHORIZED,
+                    message: ErreurMessages.introuvableUser });
             }
 
             const accessToken = jwt.sign(
@@ -67,9 +82,13 @@ export class AuthController {
                 { expiresIn: "1h" }
             );
 
-            return res.status(200).json({ accessToken });
+            return res.status(StatusCodes.SUCCESS).json({
+                code:StatusCodes.SUCCESS,
+                 accessToken });
         } catch {
-            return res.status(401).json({ message: "Refresh token invalide" });
+            return res.status(StatusCodes.UNAUTHORIZED).json({ 
+                code:StatusCodes.UNAUTHORIZED,
+                message: ErreurMessages.refreshInvalid });
         }
     }
 }
