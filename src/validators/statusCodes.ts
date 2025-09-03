@@ -1,4 +1,4 @@
-export declare enum StatusCodes {
+export enum StatusCodes {
     SUCCESS = 200,
     CREATED = 201,
     BAD_REQUEST = 400,
@@ -6,6 +6,5 @@ export declare enum StatusCodes {
     FORBIDDEN = 403,
     NOT_FOUND = 404,
     CONFLICT = 409,
-    INTERNAL_ERROR = 500
+    INTERNAL_ERROR = 500,
 }
-//# sourceMappingURL=StatusCode.d.ts.map

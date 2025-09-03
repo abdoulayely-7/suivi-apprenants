@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ReferentielService } from "../services/ReferentielService.js";
 import { PrismaClient } from "@prisma/client";
-import { CreateReferentielSchema, AddCompetenceToReferentielSchema } from "../validators/referentielValidator.js";
+import { CreateReferentielSchema, AddCompetenceToReferentielSchema, AddCompetencesToReferentielSchema } from "../validators/referentielValidator.js";
 
 const prisma = new PrismaClient();
 const service = new ReferentielService(prisma);
@@ -71,9 +71,17 @@ export class ReferentielController {
     static async addCompetence(req: Request, res: Response) {
         try {
             const referentielId: number = Number(req.params.id);
-            const data = AddCompetenceToReferentielSchema.parse(req.body);
-            await service.addCompetenceToReferentiel(referentielId, data.competenceId);
-            res.status(201).json({ message: "Compétence ajoutée au référentiel" });
+            
+            // Détecter si c'est un tableau ou un seul ID
+            if (Array.isArray(req.body.competenceIds)) {
+                const data = AddCompetencesToReferentielSchema.parse(req.body);
+                await service.addCompetencesToReferentiel(referentielId, data.competenceIds);
+                res.status(201).json({ message: `${data.competenceIds.length} compétences ajoutées au référentiel` });
+            } else {
+                const data = AddCompetenceToReferentielSchema.parse(req.body);
+                await service.addCompetenceToReferentiel(referentielId, data.competenceId);
+                res.status(201).json({ message: "Compétence ajoutée au référentiel" });
+            }
         } catch (error: any) {
             const errors = error.errors ?? [{ message: error.message }];
             res.status(400).json({ errors });

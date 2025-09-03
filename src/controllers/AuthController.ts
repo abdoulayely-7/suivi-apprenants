@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import { UserService } from "../services/UserService.js";
 import { UserWithRelations } from "../repositories/UserRepository.js";
-import { StatusCodes } from "../validators/StatusCodes.js";
-import { ErreurMessages } from "../validators/erreurMessages.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 const REFRESH_SECRET = process.env.REFRESH_SECRET || "refreshSecret";
@@ -15,29 +12,21 @@ export class AuthController {
         this.userService = userService;
     }
 
- 
     async login(req: Request, res: Response): Promise<Response> {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ 
-                code:StatusCodes.BAD_REQUEST,
-                message: ErreurMessages.emailrequired });
-
+            return res.status(400).json({ message: "Email et mot de passe requis" });
         }
 
         const user: UserWithRelations | null = await this.userService.findByEmail(email);
         if (!user) {
-            return res.status(StatusCodes.UNAUTHORIZED).json({ 
-                code:StatusCodes.UNAUTHORIZED,
-                message: ErreurMessages.invalidIdentifiants });
+            return res.status(401).json({ message: "Identifiants invalides" });
         }
 
         const valid = await this.userService.verifyPassword(user, password);
         if (!valid) {
-            return res.status(StatusCodes.UNAUTHORIZED,).json({ 
-                code:StatusCodes.UNAUTHORIZED,
-                message: ErreurMessages.invalidIdentifiants});
+            return res.status(401).json({ message: "Identifiants invalides" });
         }
 
         const accessToken = jwt.sign(
@@ -52,28 +41,22 @@ export class AuthController {
             { expiresIn: "7d" }
         );
 
-        return res.status(StatusCodes.SUCCESS).json({ 
-            code:StatusCodes.SUCCESS,
-            accessToken, refreshToken });
+        return res.status(200).json({ accessToken, refreshToken });
     }
 
-   
     async refresh(req: Request, res: Response): Promise<Response> {
         const { refreshToken } = req.body;
         if (!refreshToken) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ 
-                code:StatusCodes.BAD_REQUEST,
-                message: ErreurMessages.tokenRequired});
+            return res.status(400).json({ message: "Refresh token requis" });
         }
 
         try {
-            const payload = jwt.verify(refreshToken, REFRESH_SECRET) as { userId: number };
+            // Vérification avec TokenService
+            const payload = TokenService.verifyRefreshToken<{ userId: number }>(refreshToken);
             const user: UserWithRelations | null = await this.userService.findById(payload.userId);
 
             if (!user) {
-                return res.status(StatusCodes.UNAUTHORIZED).json({ 
-                    code:StatusCodes.UNAUTHORIZED,
-                    message: ErreurMessages.introuvableUser });
+                return res.status(401).json({ message: "Utilisateur introuvable" });
             }
 
             const accessToken = jwt.sign(
@@ -82,13 +65,9 @@ export class AuthController {
                 { expiresIn: "1h" }
             );
 
-            return res.status(StatusCodes.SUCCESS).json({
-                code:StatusCodes.SUCCESS,
-                 accessToken });
+            return res.status(200).json({ accessToken });
         } catch {
-            return res.status(StatusCodes.UNAUTHORIZED).json({ 
-                code:StatusCodes.UNAUTHORIZED,
-                message: ErreurMessages.refreshInvalid });
+            return res.status(401).json({ message: "Refresh token invalide" });
         }
     }
 }
