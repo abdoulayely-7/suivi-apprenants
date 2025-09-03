@@ -1,7 +1,7 @@
 import { PrismaClient, User } from "@prisma/client";
 import { UserRepository } from "../repositories/UserRepository.js";
 // import bcrypt from "bcrypt";
-import { UserWithRelations } from "../repositories/UserRepository.js";
+import { UserWithRelations } from "../types/UserWithRelations.js";
 
 
 export class UserService {

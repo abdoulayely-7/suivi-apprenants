@@ -1,5 +1,5 @@
 import { PrismaClient, User } from "@prisma/client";
-import { UserWithRelations } from "../repositories/UserRepository.js";
+import { UserWithRelations } from "../types/UserWithRelations.js";
 export declare class UserService {
     private repo;
     constructor(prisma: PrismaClient);

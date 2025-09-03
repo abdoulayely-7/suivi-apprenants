@@ -1,9 +1,5 @@
-import { PrismaClient, User, Profil, ProfilSortie } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import { IRepository } from "./IRepository.js";
-export type UserWithRelations = User & {
-    profil?: Profil;
-    profilSortie?: ProfilSortie;
-};
 export declare class UserRepository implements IRepository<User> {
     private prisma;
     constructor(prisma: PrismaClient);

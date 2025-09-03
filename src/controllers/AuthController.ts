@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/UserService.js";
-import { UserWithRelations } from "../repositories/UserRepository.js";
+import { UserWithRelations } from "../types/UserWithRelations.js";
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { StatusCodes } from "../validators/statusCodes.js";
-import { TokenService } from "../services/TokenService.js"; // <-- import
+import { TokenService } from "../services/TokenService.js";
 
 export class AuthController {
     private userService: UserService;

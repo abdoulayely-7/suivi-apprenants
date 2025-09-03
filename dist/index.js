@@ -9,6 +9,7 @@ import niveauRoute from "./routes/niveauRoute.js";
 import ProfilSortieRoutes from "./routes/ProfilSortieRoutes.js";
 import authRoutes from "./routes/authRoute.js";
 const app = express();
+const PORT = Number(process.env.PORT) || 3000;
 app.use(express.json());
 app.use("/profiles", profileRoutes);
 app.use("/promos", promoRoutes);
@@ -18,6 +19,7 @@ app.use("/niveaux", niveauRoute);
 app.use("/profilSorties", ProfilSortieRoutes);
 app.use("/users", useRoutes);
 app.use("/tags", tagRoutes);
+console.log("-------------------");
 app.use("/auth", authRoutes);
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+app.listen(PORT, () => app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`)));
 //# sourceMappingURL=index.js.map
