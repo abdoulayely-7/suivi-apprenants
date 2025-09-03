@@ -1,7 +1,12 @@
 import { Router } from "express";
 import { ReferentielController } from "../controllers/ReferentielController.js";
 
+import { authenticate } from "../middlewares/authMiddleware.js";
+import { authorize } from "../middlewares/rbacMiddleware.js";
+
 const router = Router();
+
+router.use(authenticate, authorize("referentiels"));
 
 router.get("/", ReferentielController.getAll);
 router.get("/:id", ReferentielController.findById);

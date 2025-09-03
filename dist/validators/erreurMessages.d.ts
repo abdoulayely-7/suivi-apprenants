@@ -23,5 +23,11 @@ export declare const ErreurMessages: {
     NOREFRESHTOKEN: string;
     USERINVALID: string;
     REFRESHTOKENINVALID: string;
+    TOKEN_REQUIRED: string;
+    TOKEN_INVALID: string;
+    ACCESS_DENIED: string;
+    SERVER_ERROR: string;
+    BAD_REQUEST: string;
+    NOT_FOUND: string;
 };
 //# sourceMappingURL=erreurMessages.d.ts.map

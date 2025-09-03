@@ -1,0 +1,1 @@
+{"version":3,"file":"UserWithRelations.d.ts","sourceRoot":"","sources":["../../src/types/UserWithRelations.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,EAAE,YAAY,EAAE,MAAM,gBAAgB,CAAC;AAE5D,MAAM,MAAM,iBAAiB,GAAG,IAAI,GAAG;IACnC,MAAM,CAAC,EAAE,MAAM,CAAC;IAChB,YAAY,CAAC,EAAE,YAAY,CAAC;CAC/B,CAAC"}

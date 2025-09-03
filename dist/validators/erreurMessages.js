@@ -23,5 +23,13 @@ export const ErreurMessages = {
     NOREFRESHTOKEN: "Refresh token requis",
     USERINVALID: "Utilisateur introuvable",
     REFRESHTOKENINVALID: "Refresh token invalide",
+    TOKEN_REQUIRED: "Le jeton d'authentification est requis.",
+    TOKEN_INVALID: "Le jeton d'authentification est invalide ou expiré.",
+    // Autorisation (RBAC)
+    ACCESS_DENIED: "Accès refusé. Vous n'avez pas les permissions nécessaires.",
+    // Génériques
+    SERVER_ERROR: "Une erreur interne est survenue.",
+    BAD_REQUEST: "La requête est invalide.",
+    NOT_FOUND: "La ressource demandée est introuvable."
 };
 //# sourceMappingURL=erreurMessages.js.map
