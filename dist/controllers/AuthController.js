@@ -1,6 +1,6 @@
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { StatusCodes } from "../validators/statusCodes.js";
-import { TokenService } from "../services/TokenService.js"; // <-- import
+import { TokenService } from "../services/TokenService.js";
 export class AuthController {
     userService;
     constructor(userService) {

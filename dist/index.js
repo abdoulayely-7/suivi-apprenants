@@ -8,6 +8,7 @@ import tagRoutes from "./routes/tagRoutes.js";
 import niveauRoute from "./routes/niveauRoute.js";
 import ProfilSortieRoutes from "./routes/ProfilSortieRoutes.js";
 import authRoutes from "./routes/authRoute.js";
+import "dotenv/config";
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 app.use(express.json());
