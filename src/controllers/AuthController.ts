@@ -3,7 +3,7 @@ import { UserService } from "../services/UserService.js";
 import { UserWithRelations } from "../repositories/UserRepository.js";
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { StatusCodes } from "../validators/statusCodes.js";
-import { TokenService } from "../services/TokenService.js"; // <-- import
+import { TokenService } from "../services/TokenService.js";
 
 export class AuthController {
     private userService: UserService;
@@ -38,49 +38,57 @@ export class AuthController {
             });
         }
 
-        // Utilisation de TokenService pour générer les tokens
         const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
         const refreshToken = TokenService.generateRefreshToken({ userId: user.id });
 
+        // ⚡ Stockage du refresh token dans un cookie HTTPOnly
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 jours
+        });
+
         return res.status(StatusCodes.SUCCESS).json({ 
-            code: StatusCodes.SUCCESS,
-            accessToken, 
-            refreshToken 
+    code: StatusCodes.SUCCESS,
+    accessToken
+});
+
+    }
+
+   async refresh(req: Request, res: Response): Promise<Response> {
+    const refreshToken = req.cookies.refreshToken;  
+
+    if (!refreshToken) {
+        return res.status(StatusCodes.BAD_REQUEST).json({ 
+            code: StatusCodes.BAD_REQUEST,
+            message: ErreurMessages.NOREFRESHTOKEN 
         });
     }
 
-    async refresh(req: Request, res: Response): Promise<Response> {
-        const { refreshToken } = req.body;
-        if (!refreshToken) {
-            return res.status(StatusCodes.BAD_REQUEST).json({ 
-                code: StatusCodes.BAD_REQUEST,
-                message: ErreurMessages.NOREFRESHTOKEN 
-            });
-        }
+    try {
+        const payload = TokenService.verifyRefreshToken<{ userId: number }>(refreshToken);
+        const user: UserWithRelations | null = await this.userService.findById(payload.userId);
 
-        try {
-            // Vérification avec TokenService
-            const payload = TokenService.verifyRefreshToken<{ userId: number }>(refreshToken);
-            const user: UserWithRelations | null = await this.userService.findById(payload.userId);
-
-            if (!user) {
-                return res.status(StatusCodes.UNAUTHORIZED).json({ 
-                    code: StatusCodes.UNAUTHORIZED,
-                    message: ErreurMessages.USERINVALID 
-                });
-            }
-
-            const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
-
-            return res.status(StatusCodes.SUCCESS).json({ 
-                code: StatusCodes.SUCCESS,
-                accessToken 
-            });
-        } catch {
+        if (!user) {
             return res.status(StatusCodes.UNAUTHORIZED).json({ 
                 code: StatusCodes.UNAUTHORIZED,
-                message: ErreurMessages.REFRESHTOKENINVALID 
+                message: ErreurMessages.USERINVALID 
             });
         }
+
+        const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
+
+        return res.status(StatusCodes.SUCCESS).json({ 
+            code: StatusCodes.SUCCESS,
+            accessToken 
+        });
+    } catch {
+        return res.status(StatusCodes.UNAUTHORIZED).json({ 
+            code: StatusCodes.UNAUTHORIZED,
+            message: ErreurMessages.REFRESHTOKENINVALID 
+        });
     }
+}
+
 }

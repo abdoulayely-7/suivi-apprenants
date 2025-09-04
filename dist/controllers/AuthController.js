@@ -1,6 +1,6 @@
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { StatusCodes } from "../validators/statusCodes.js";
-import { TokenService } from "../services/TokenService.js"; // <-- import
+import { TokenService } from "../services/TokenService.js";
 export class AuthController {
     userService;
     constructor(userService) {
@@ -28,17 +28,22 @@ export class AuthController {
                 message: ErreurMessages.IVALID
             });
         }
-        // Utilisation de TokenService pour générer les tokens
         const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
         const refreshToken = TokenService.generateRefreshToken({ userId: user.id });
+        // ⚡ Stockage du refresh token dans un cookie HTTPOnly
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 jours
+        });
         return res.status(StatusCodes.SUCCESS).json({
             code: StatusCodes.SUCCESS,
-            accessToken,
-            refreshToken
+            accessToken
         });
     }
     async refresh(req, res) {
-        const { refreshToken } = req.body;
+        const refreshToken = req.cookies.refreshToken; // ✅ depuis le cookie
         if (!refreshToken) {
             return res.status(StatusCodes.BAD_REQUEST).json({
                 code: StatusCodes.BAD_REQUEST,
@@ -46,7 +51,6 @@ export class AuthController {
             });
         }
         try {
-            // Vérification avec TokenService
             const payload = TokenService.verifyRefreshToken(refreshToken);
             const user = await this.userService.findById(payload.userId);
             if (!user) {
