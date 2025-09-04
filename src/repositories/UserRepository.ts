@@ -10,8 +10,6 @@ export class UserRepository implements IRepository<User> {
         this.prisma = prisma;
     }
 
-    
-
     async findAll(): Promise<User[]> {
         return this.prisma.user.findMany({
             include: {

@@ -1,13 +1,13 @@
 
-import {PrismaClient, Profil} from "@prisma/client";
-import { ProfileRepository } from "../repositories/ProfileRepository.js";
+import {Profil} from "@prisma/client";
+import { IProfilRepository } from "../repositories/interfaces.js";
 import { IProfilService } from "./interfaces/IProfilService.js";
 
 export class ProfileService implements IProfilService {
-    private repo: ProfileRepository;
+    private repo: IProfilRepository;
 
-    constructor(prisma: PrismaClient) {
-        this.repo = new ProfileRepository(prisma);
+    constructor(repo) {
+        this.repo = repo
     }
 
     async getAllProfiles(): Promise<Profil[]> {

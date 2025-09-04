@@ -2,14 +2,11 @@ import { Router } from "express";
 import { NiveauController } from "../controllers/NiveauController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { authorize } from "../middlewares/rbacMiddleware.js";
-import { PrismaClient } from "@prisma/client";
-import { NiveauService } from "../services/NiveauService.js";
-import { NiveauRepository } from "../repositories/NiveauRepository.js";
 
-const prisma = new PrismaClient();
-const niveauRepo = new NiveauRepository(prisma);
-const niveauService = new NiveauService(niveauRepo);
-const niveauController = new NiveauController(niveauService);
+import { Container } from "../container/Container.js";
+
+const container = new Container();
+const niveauController = new NiveauController(container.getNiveauService());
 
 const router = Router();
 

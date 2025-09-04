@@ -5,3 +5,4 @@ export interface IRepository<T> {
     update(id: number, data: Partial<T>): Promise<T>;
     delete(id: number): Promise<void>;
 }
+

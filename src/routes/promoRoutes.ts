@@ -1,16 +1,11 @@
-// src/routes/promoRoutes.ts
 import { Router } from "express";
 import { PromoController } from "../controllers/PromoController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { authorize } from "../middlewares/rbacMiddleware.js";
-import { PrismaClient } from "@prisma/client";
-import { PromoService } from "../services/PromoService.js";
-import { PromoRepository } from "../repositories/PromoRepository.js";
+import { Container } from "../container/Container.js";
 
-const prisma = new PrismaClient();
-const promoRepo = new PromoRepository(prisma);
-const promoService = new PromoService(promoRepo);
-const promoController = new PromoController(promoService);
+const container = new Container();
+const promoController = new PromoController(container.getPromoService());
 
 const router = Router();
 

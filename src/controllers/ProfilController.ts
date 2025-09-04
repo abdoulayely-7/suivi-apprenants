@@ -3,7 +3,9 @@ import { IProfilService } from "../services/interfaces/IProfilService.js";
 import {CreateProfileSchema} from "../validators/profilValidator.js";
 
 export class ProfileController {
-    constructor(private profilService: IProfilService) {}
+    constructor(private profilService: IProfilService) {
+       //
+    }
 
     async getAll(_req: Request, res: Response) {
         const profiles = await this.profilService.getAllProfiles();

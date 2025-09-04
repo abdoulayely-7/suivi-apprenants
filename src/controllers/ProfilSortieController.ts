@@ -3,7 +3,9 @@ import { IProfilSortieService } from "../services/interfaces/IProfilSortieServic
 import { CreateProfilSortieSchema } from "../validators/ProfilSortieValidator.js";
 
 export class ProfilSortieController {
-    constructor(private profilSortieService: IProfilSortieService) {}
+    constructor(private profilSortieService: IProfilSortieService) {
+
+    }
 
     async getAll(_req: Request, res: Response) {
         const profilSortie = await this.profilSortieService.getAllProfilSortie();

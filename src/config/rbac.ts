@@ -27,7 +27,8 @@ export const RBAC: Record<string, Record<string, string[]>> = {
     competences: ["GET"],
     referentiels: ["GET"],
     tags: ["GET"],
-    "profils-sortie": ["GET"],
+      profils_sortie: ["GET"],
+    //"profils-sortie": ["GET"],
   },
   Apprenant: {
     // Pas d’accès aux routes de paramétrage

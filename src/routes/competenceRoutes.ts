@@ -3,14 +3,11 @@ import { Router } from "express";
 import { CompetenceController } from "../controllers/CompetenceController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { authorize } from "../middlewares/rbacMiddleware.js";
-import { PrismaClient } from "@prisma/client";
-import { CompetenceService } from "../services/CompetenceService.js";
-import { CompetenceRepository } from "../repositories/CompetenceRepository.js";
+import { Container } from "../container/Container.js";
 
-const prisma = new PrismaClient();
-const competenceRepo = new CompetenceRepository(prisma);
-const competenceService = new CompetenceService(competenceRepo);
-const competenceController = new CompetenceController(competenceService);
+
+const container = new Container();
+const competenceController = new CompetenceController(container.getCompetenceService());
 
 const router = Router();
 

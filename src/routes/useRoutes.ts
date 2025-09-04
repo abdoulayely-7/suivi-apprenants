@@ -1,21 +1,15 @@
 import { Router } from "express";
 import { UserController } from "../controllers/UserController.js";
-import { makeAuthenticate } from "../middlewares/authMiddleware.js";
+import { authenticate } from "../middlewares/authMiddleware.js";
 import { authorize } from "../middlewares/rbacMiddleware.js";
-import { DefaultTokenService } from "../services/DefaultTokenService.js";
-import { PrismaClient } from "@prisma/client";
-import { UserService } from "../services/UserService.js";
-import { UserRepository } from "../repositories/UserRepository.js";
 
-const prisma = new PrismaClient();
-const userRepo = new UserRepository(prisma);
-const userService = new UserService(userRepo);
-const userController = new UserController(userService);
-const tokens = new DefaultTokenService();
+import { Container } from "../container/Container.js";
+
+const container = new Container();
+const userController = new UserController(container.getUserService());
 
 const router = Router();
 
-const authenticate = makeAuthenticate(tokens);
 router.use(authenticate, authorize("users"));
 
 router.get("/", (req, res) => userController.getAll(req, res));
@@ -23,4 +17,5 @@ router.get("/:id", (req, res) => userController.findById(req, res));
 router.post("/", (req, res) => userController.create(req, res));
 router.put("/:id", (req, res) => userController.update(req, res));
 router.delete("/:id", (req, res) => userController.delete(req, res));
+
 export default router;

@@ -2,13 +2,10 @@ import { Router } from "express";
 import { ProfilSortieController } from "../controllers/ProfilSortieController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { authorize } from "../middlewares/rbacMiddleware.js";
-import { PrismaClient } from "@prisma/client";
-import { ProfilSortieService } from "../services/ProfilSortiService.js";
-import { ProfilSortieRepository } from "../repositories/ProfilSortieRepository.js";
-const prisma = new PrismaClient();
-const profilSortieRepo = new ProfilSortieRepository(prisma);
-const profilSortieService = new ProfilSortieService(profilSortieRepo);
-const profilSortieController = new ProfilSortieController(profilSortieService);
+// ... existing code ...
+import { Container } from "../container/Container.js";
+const container = new Container();
+const profilSortieController = new ProfilSortieController(container.getProfilSortieService());
 const router = Router();
 router.use(authenticate, authorize("niveaux"));
 router.get("/", (req, res) => profilSortieController.getAll(req, res));
@@ -17,4 +14,5 @@ router.post("/", (req, res) => profilSortieController.create(req, res));
 router.delete("/:id", (req, res) => profilSortieController.delete(req, res));
 router.put("/:id", (req, res) => profilSortieController.update(req, res));
 export default router;
+// ... existing code ...
 //# sourceMappingURL=ProfilSortieRoutes.js.map
