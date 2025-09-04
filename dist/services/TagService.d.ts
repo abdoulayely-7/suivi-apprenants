@@ -1,7 +1,9 @@
-import { PrismaClient, Tag } from "@prisma/client";
-export declare class TagService {
+import { Tag } from "@prisma/client";
+import { ITagRepository } from "../repositories/interfaces.js";
+import { ITagService } from "./interfaces/ITagService.js";
+export declare class TagService implements ITagService {
     private repo;
-    constructor(prisma: PrismaClient);
+    constructor(repo: ITagRepository);
     getAllTags(): Promise<Tag[]>;
     findTagById(id: number): Promise<Tag | null>;
     createTag(data: Omit<Tag, "id" | "briefTags">): Promise<Tag>;

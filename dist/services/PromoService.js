@@ -1,8 +1,7 @@
-import { PromoRepository } from "../repositories/PromoRepository.js";
 export class PromoService {
     repo;
-    constructor(prisma) {
-        this.repo = new PromoRepository(prisma);
+    constructor(repo) {
+        this.repo = repo;
     }
     async getFormateurs(promoId) {
         return this.repo.findFormateursByPromo(promoId);

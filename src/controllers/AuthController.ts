@@ -3,13 +3,15 @@ import { UserService } from "../services/UserService.js";
 import { UserWithRelations } from "../types/UserWithRelations.js";
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { StatusCodes } from "../validators/statusCodes.js";
-import { TokenService } from "../services/TokenService.js";
+import { ITokenService } from "../services/ITokenService.js";
 
 export class AuthController {
     private userService: UserService;
+    private tokens: ITokenService;
 
-    constructor(userService: UserService) {
+    constructor(userService: UserService, tokens: ITokenService) {
         this.userService = userService;
+        this.tokens = tokens;
     }
 
     async login(req: Request, res: Response): Promise<Response> {
@@ -38,9 +40,8 @@ export class AuthController {
             });
         }
 
-        // Utilisation de TokenService pour générer les tokens
-        const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
-        const refreshToken = TokenService.generateRefreshToken({ userId: user.id });
+        const accessToken = this.tokens.generateAccessToken({ userId: user.id, role: user.profil?.name });
+        const refreshToken = this.tokens.generateRefreshToken({ userId: user.id });
 
         return res.status(StatusCodes.SUCCESS).json({ 
             code: StatusCodes.SUCCESS,
@@ -59,8 +60,7 @@ export class AuthController {
         }
 
         try {
-            // Vérification avec TokenService
-            const payload = TokenService.verifyRefreshToken<{ userId: number }>(refreshToken);
+            const payload = this.tokens.verifyRefreshToken<{ userId: number }>(refreshToken);
             const user: UserWithRelations | null = await this.userService.findById(payload.userId);
 
             if (!user) {
@@ -70,7 +70,7 @@ export class AuthController {
                 });
             }
 
-            const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
+            const accessToken = this.tokens.generateAccessToken({ userId: user.id, role: user.profil?.name });
 
             return res.status(StatusCodes.SUCCESS).json({ 
                 code: StatusCodes.SUCCESS,

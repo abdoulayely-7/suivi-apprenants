@@ -1,8 +1,7 @@
-import { UserRepository } from "../repositories/UserRepository.js";
 export class UserService {
     repo;
-    constructor(prisma) {
-        this.repo = new UserRepository(prisma);
+    constructor(repo) {
+        this.repo = repo;
     }
     async getAllUsers() {
         return this.repo.findAll();

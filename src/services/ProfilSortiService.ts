@@ -1,11 +1,12 @@
-import {PrismaClient, ProfilSortie} from "@prisma/client";
-import { ProfilSortieRepository } from "../repositories/ProfilSortieRepository.js";
+import { ProfilSortie } from "@prisma/client";
+import { IProfilSortieRepository } from "../repositories/interfaces.js";
+import { IProfilSortieService } from "./interfaces/IProfilSortieService.js";
 
-export class ProfilSortieService {
-    private repo: ProfilSortieRepository;
+export class ProfilSortieService implements IProfilSortieService {
+    private repo: IProfilSortieRepository;
     
-        constructor(prisma: PrismaClient) {
-            this.repo = new ProfilSortieRepository(prisma);
+        constructor(repo: IProfilSortieRepository) {
+            this.repo = repo;
         }
          async getAllProfilSortie(): Promise<ProfilSortie[]> {
                 return this.repo.findAll();

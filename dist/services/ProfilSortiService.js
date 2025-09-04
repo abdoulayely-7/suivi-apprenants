@@ -1,8 +1,7 @@
-import { ProfilSortieRepository } from "../repositories/ProfilSortieRepository.js";
 export class ProfilSortieService {
     repo;
-    constructor(prisma) {
-        this.repo = new ProfilSortieRepository(prisma);
+    constructor(repo) {
+        this.repo = repo;
     }
     async getAllProfilSortie() {
         return this.repo.findAll();

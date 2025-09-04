@@ -1,8 +1,7 @@
-import { TagRepository } from "../repositories/TagRepository.js";
 export class TagService {
     repo;
-    constructor(prisma) {
-        this.repo = new TagRepository(prisma);
+    constructor(repo) {
+        this.repo = repo;
     }
     async getAllTags() {
         return this.repo.findAll();

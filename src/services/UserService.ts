@@ -1,14 +1,14 @@
-import { PrismaClient, User } from "@prisma/client";
-import { UserRepository } from "../repositories/UserRepository.js";
-// import bcrypt from "bcrypt";
+import { User } from "@prisma/client";
+import { IUserRepository } from "../repositories/IUserRepository.js";
 import { UserWithRelations } from "../types/UserWithRelations.js";
+import { IUserService } from "./interfaces/IUserService.js";
 
 
-export class UserService {
-    private repo: UserRepository;
+export class UserService implements IUserService {
+    private repo: IUserRepository;
 
-    constructor(prisma: PrismaClient) {
-        this.repo = new UserRepository(prisma);
+    constructor(repo: IUserRepository) {
+        this.repo = repo;
     }
 
     async getAllUsers(): Promise<User[]> {
@@ -50,7 +50,7 @@ export class UserService {
         return this.repo.findById(id) as Promise<UserWithRelations | null>;
     }
 
-    async verifyPassword(user: UserWithRelations, password: string): Promise<boolean> {
+    async verifyPassword(user: User, password: string): Promise<boolean> {
         return this.repo.verifyPassword(user, password);
     }
 }

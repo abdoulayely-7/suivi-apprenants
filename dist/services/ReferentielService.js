@@ -1,8 +1,7 @@
-import { ReferentielRepository } from "../repositories/ReferentielRepository.js";
 export class ReferentielService {
     repo;
-    constructor(prisma) {
-        this.repo = new ReferentielRepository(prisma);
+    constructor(repo) {
+        this.repo = repo;
     }
     async getAllReferentiels() {
         return this.repo.findAll();

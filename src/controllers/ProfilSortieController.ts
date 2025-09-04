@@ -1,20 +1,19 @@
 import { Request, Response } from "express";
-import { ProfilSortieService } from "../services/ProfilSortiService.js";
-import { PrismaClient } from "@prisma/client";
+import { IProfilSortieService } from "../services/interfaces/IProfilSortieService.js";
 import { CreateProfilSortieSchema } from "../validators/ProfilSortieValidator.js";
 
-const prisma = new PrismaClient();
-const service = new ProfilSortieService(prisma);
-
 export class ProfilSortieController {
-    static async getAll(_req: Request, res: Response) {
-        const profilSortie = await service.getAllProfilSortie();
+    constructor(private profilSortieService: IProfilSortieService) {}
+
+    async getAll(_req: Request, res: Response) {
+        const profilSortie = await this.profilSortieService.getAllProfilSortie();
         res.json(profilSortie);
     }
-    static async findById(req: Request, res: Response) {
+    
+    async findById(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
-            const profilSortie = await service.findProfilSortieById(id);
+            const profilSortie = await this.profilSortieService.findProfilSortieById(id);
             if (!profilSortie) {
                 return res.status(404).json({ error: "profilSortie non trouvé" });
             }
@@ -24,10 +23,10 @@ export class ProfilSortieController {
         }
     }
 
-    static async create(req: Request, res: Response) {
+    async create(req: Request, res: Response) {
         try {
             const data = CreateProfilSortieSchema.parse(req.body);
-            const profilSortie = await service.createProfilSortie(data);
+            const profilSortie = await this.profilSortieService.createProfilSortie(data);
             res.status(201).json(profilSortie);
         } catch (error: any) {
             const errors = error.errors ?? [{ message: error.message }];
@@ -35,22 +34,22 @@ export class ProfilSortieController {
         }
     }
 
-    static async update(req: Request, res: Response) {
+    async update(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
             const name  = req.body;
-            const profilSortie = await service.updateProfilSortie(id, name);
+            const profilSortie = await this.profilSortieService.updateProfilSortie(id, name);
             res.json(profilSortie);
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }
     }
 
-    static async delete(req: Request, res: Response) {
+    async delete(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
 
-            await service.deleteProfilSortie(id);
+            await this.profilSortieService.deleteProfilSortie(id);
             res.status(204).send();
         } catch (error: any) {
             res.status(400).json({ error: error.message });

@@ -1,11 +1,12 @@
-import { PrismaClient, Tag } from "@prisma/client";
-import { TagRepository } from "../repositories/TagRepository.js";
+import { Tag } from "@prisma/client";
+import { ITagRepository } from "../repositories/interfaces.js";
+import { ITagService } from "./interfaces/ITagService.js";
 
-export class TagService {
-    private repo: TagRepository;
+export class TagService implements ITagService {
+    private repo: ITagRepository;
 
-    constructor(prisma: PrismaClient) {
-        this.repo = new TagRepository(prisma);
+    constructor(repo: ITagRepository) {
+        this.repo = repo;
     }
 
     async getAllTags(): Promise<Tag[]> {

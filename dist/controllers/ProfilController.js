@@ -1,17 +1,17 @@
-import { ProfileService } from "../services/ProfilService.js";
-import { PrismaClient } from "@prisma/client";
 import { CreateProfileSchema } from "../validators/profilValidator.js";
-const prisma = new PrismaClient();
-const service = new ProfileService(prisma);
 export class ProfileController {
-    static async getAll(_req, res) {
-        const profiles = await service.getAllProfiles();
+    profilService;
+    constructor(profilService) {
+        this.profilService = profilService;
+    }
+    async getAll(_req, res) {
+        const profiles = await this.profilService.getAllProfiles();
         res.json(profiles);
     }
-    static async findById(req, res) {
+    async findById(req, res) {
         try {
             const id = Number(req.params.id);
-            const profile = await service.findProfileById(id);
+            const profile = await this.profilService.findProfileById(id);
             if (!profile) {
                 return res.status(404).json({ error: "Profil non trouvé" });
             }
@@ -21,10 +21,10 @@ export class ProfileController {
             return res.status(400).json({ error: error.message });
         }
     }
-    static async create(req, res) {
+    async create(req, res) {
         try {
             const data = CreateProfileSchema.parse(req.body);
-            const profile = await service.createProfile(data);
+            const profile = await this.profilService.createProfile(data);
             res.status(201).json(profile);
         }
         catch (error) {
@@ -32,21 +32,21 @@ export class ProfileController {
             res.status(400).json({ errors });
         }
     }
-    static async update(req, res) {
+    async update(req, res) {
         try {
             const id = Number(req.params.id);
             const data = req.body;
-            const profile = await service.updateProfile(id, data);
+            const profile = await this.profilService.updateProfile(id, data);
             res.json(profile);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    static async delete(req, res) {
+    async delete(req, res) {
         try {
             const id = Number(req.params.id);
-            await service.deleteProfile(id);
+            await this.profilService.deleteProfile(id);
             res.status(204).send();
         }
         catch (error) {

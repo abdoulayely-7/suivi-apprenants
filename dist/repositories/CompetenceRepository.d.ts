@@ -19,8 +19,8 @@ export declare class CompetenceRepository implements IRepository<Competence> {
         };
     } & {
         id: number;
-        competenceId: number;
         userId: number;
+        competenceId: number;
         niveauId: number;
     })[]>;
 }

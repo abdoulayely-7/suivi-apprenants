@@ -1,11 +1,12 @@
-import { PrismaClient, Competence } from "@prisma/client";
-import { CompetenceRepository } from "../repositories/CompetenceRepository.js";
+import { Competence } from "@prisma/client";
+import { ICompetenceRepository } from "../repositories/interfaces.js";
+import { ICompetenceService } from "./interfaces/ICompetenceService.js";
 
-export class CompetenceService {
-  private repo: CompetenceRepository;
+export class CompetenceService implements ICompetenceService {
+  private repo: ICompetenceRepository;
 
-  constructor(prisma: PrismaClient) {
-    this.repo = new CompetenceRepository(prisma);
+  constructor(repo: ICompetenceRepository) {
+    this.repo = repo;
   }
 
   async getAllCompetences(): Promise<Competence[]> {

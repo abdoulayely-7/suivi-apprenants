@@ -1,10 +1,11 @@
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { StatusCodes } from "../validators/statusCodes.js";
-import { TokenService } from "../services/TokenService.js";
 export class AuthController {
     userService;
-    constructor(userService) {
+    tokens;
+    constructor(userService, tokens) {
         this.userService = userService;
+        this.tokens = tokens;
     }
     async login(req, res) {
         const { email, password } = req.body;
@@ -28,9 +29,8 @@ export class AuthController {
                 message: ErreurMessages.IVALID
             });
         }
-        // Utilisation de TokenService pour générer les tokens
-        const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
-        const refreshToken = TokenService.generateRefreshToken({ userId: user.id });
+        const accessToken = this.tokens.generateAccessToken({ userId: user.id, role: user.profil?.name });
+        const refreshToken = this.tokens.generateRefreshToken({ userId: user.id });
         return res.status(StatusCodes.SUCCESS).json({
             code: StatusCodes.SUCCESS,
             accessToken,
@@ -46,8 +46,7 @@ export class AuthController {
             });
         }
         try {
-            // Vérification avec TokenService
-            const payload = TokenService.verifyRefreshToken(refreshToken);
+            const payload = this.tokens.verifyRefreshToken(refreshToken);
             const user = await this.userService.findById(payload.userId);
             if (!user) {
                 return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -55,7 +54,7 @@ export class AuthController {
                     message: ErreurMessages.USERINVALID
                 });
             }
-            const accessToken = TokenService.generateAccessToken({ userId: user.id, role: user.profil?.name });
+            const accessToken = this.tokens.generateAccessToken({ userId: user.id, role: user.profil?.name });
             return res.status(StatusCodes.SUCCESS).json({
                 code: StatusCodes.SUCCESS,
                 accessToken

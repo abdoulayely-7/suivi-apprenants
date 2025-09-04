@@ -22,5 +22,5 @@ app.use("/users", useRoutes);
 app.use("/tags", tagRoutes);
 console.log("-------------------");
 app.use("/auth", authRoutes);
-app.listen(PORT, () => app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`)));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 //# sourceMappingURL=index.js.map

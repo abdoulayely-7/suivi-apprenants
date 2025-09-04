@@ -1,8 +1,4 @@
 import bcrypt from "bcrypt";
-// export type UserWithRelations = User & {
-//     profil?: Profil;
-//     profilSortie?: ProfilSortie;
-// };
 export class UserRepository {
     prisma;
     constructor(prisma) {

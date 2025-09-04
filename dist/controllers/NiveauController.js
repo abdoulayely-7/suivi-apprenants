@@ -1,17 +1,17 @@
-import { NiveauService } from "../services/NiveauService.js";
-import { PrismaClient } from "@prisma/client";
 import { CreateNiveauSchema } from "../validators/NiveauValidator.js";
-const prisma = new PrismaClient();
-const service = new NiveauService(prisma);
 export class NiveauController {
-    static async getAll(_req, res) {
-        const niveau = await service.getAllNiveau();
+    niveauService;
+    constructor(niveauService) {
+        this.niveauService = niveauService;
+    }
+    async getAll(_req, res) {
+        const niveau = await this.niveauService.getAllNiveau();
         res.json(niveau);
     }
-    static async findById(req, res) {
+    async findById(req, res) {
         try {
             const id = Number(req.params.id);
-            const niveau = await service.findNiveauById(id);
+            const niveau = await this.niveauService.findNiveauById(id);
             if (!niveau) {
                 return res.status(404).json({ error: "niveau non trouvé" });
             }
@@ -21,10 +21,10 @@ export class NiveauController {
             return res.status(400).json({ error: error.message });
         }
     }
-    static async create(req, res) {
+    async create(req, res) {
         try {
             const data = CreateNiveauSchema.parse(req.body);
-            const niveau = await service.createNiveau(data);
+            const niveau = await this.niveauService.createNiveau(data);
             res.status(201).json(niveau);
         }
         catch (error) {
@@ -32,21 +32,21 @@ export class NiveauController {
             res.status(400).json({ errors });
         }
     }
-    static async update(req, res) {
+    async update(req, res) {
         try {
             const id = Number(req.params.id);
             const data = CreateNiveauSchema.parse(req.body);
-            const niveau = await service.updateNiveau(id, data);
+            const niveau = await this.niveauService.updateNiveau(id, data);
             res.json(niveau);
         }
         catch (error) {
             res.status(400).json({ error: error.message });
         }
     }
-    static async delete(req, res) {
+    async delete(req, res) {
         try {
             const id = Number(req.params.id);
-            await service.deleteNiveau(id);
+            await this.niveauService.deleteNiveau(id);
             res.status(204).send();
         }
         catch (error) {

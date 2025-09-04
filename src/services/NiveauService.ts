@@ -1,11 +1,12 @@
-import {PrismaClient, Niveau} from "@prisma/client";
-import { NiveauRepository } from "../repositories/NiveauRepository.js";
+import { Niveau } from "@prisma/client";
+import { INiveauRepository } from "../repositories/interfaces.js";
+import { INiveauService } from "./interfaces/INiveauService.js";
 
-export class NiveauService {
-    private repo: NiveauRepository;
+export class NiveauService implements INiveauService {
+    private repo: INiveauRepository;
     
-        constructor(prisma: PrismaClient) {
-            this.repo = new NiveauRepository(prisma);
+        constructor(repo: INiveauRepository) {
+            this.repo = repo;
         }
          async getAllNiveau(): Promise<Niveau[]> {
                 return this.repo.findAll();

@@ -1,8 +1,7 @@
-import { NiveauRepository } from "../repositories/NiveauRepository.js";
 export class NiveauService {
     repo;
-    constructor(prisma) {
-        this.repo = new NiveauRepository(prisma);
+    constructor(repo) {
+        this.repo = repo;
     }
     async getAllNiveau() {
         return this.repo.findAll();

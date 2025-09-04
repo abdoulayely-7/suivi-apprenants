@@ -1,11 +1,12 @@
-import {PrismaClient, Promo, User} from "@prisma/client";
-import { PromoRepository } from "../repositories/PromoRepository.js";
+import { Promo, User } from "@prisma/client";
+import { IPromoRepository } from "../repositories/interfaces.js";
+import { IPromoService } from "./interfaces/IPromoService.js";
 
-export class PromoService {
-    private repo: PromoRepository;
+export class PromoService implements IPromoService {
+    private repo: IPromoRepository;
 
-    constructor(prisma: PrismaClient) {
-        this.repo = new PromoRepository(prisma);
+    constructor(repo: IPromoRepository) {
+        this.repo = repo;
     }
 
     async getFormateurs(promoId: number): Promise<User[]> {

@@ -1,8 +1,9 @@
 
 import {PrismaClient, Profil} from "@prisma/client";
 import { ProfileRepository } from "../repositories/ProfileRepository.js";
+import { IProfilService } from "./interfaces/IProfilService.js";
 
-export class ProfileService {
+export class ProfileService implements IProfilService {
     private repo: ProfileRepository;
 
     constructor(prisma: PrismaClient) {

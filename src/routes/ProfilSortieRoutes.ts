@@ -2,14 +2,22 @@ import { Router } from "express";
 import { ProfilSortieController } from "../controllers/ProfilSortieController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 import { authorize } from "../middlewares/rbacMiddleware.js";
+import { PrismaClient } from "@prisma/client";
+import { ProfilSortieService } from "../services/ProfilSortiService.js";
+import { ProfilSortieRepository } from "../repositories/ProfilSortieRepository.js";
+
+const prisma = new PrismaClient();
+const profilSortieRepo = new ProfilSortieRepository(prisma);
+const profilSortieService = new ProfilSortieService(profilSortieRepo);
+const profilSortieController = new ProfilSortieController(profilSortieService);
 
 const router = Router();
 
 router.use(authenticate, authorize("niveaux"));
-router.get("/", ProfilSortieController.getAll);
-router.get("/:id", ProfilSortieController.findById);
-router.post("/", ProfilSortieController.create);
-router.delete("/:id", ProfilSortieController.delete);
-router.put("/:id", ProfilSortieController.update);
+router.get("/", (req, res) => profilSortieController.getAll(req, res));
+router.get("/:id", (req, res) => profilSortieController.findById(req, res));
+router.post("/", (req, res) => profilSortieController.create(req, res));
+router.delete("/:id", (req, res) => profilSortieController.delete(req, res));
+router.put("/:id", (req, res) => profilSortieController.update(req, res));
 
 export default router;

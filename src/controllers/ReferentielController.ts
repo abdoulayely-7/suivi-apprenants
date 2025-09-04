@@ -1,22 +1,19 @@
 import { Request, Response } from "express";
-import { ReferentielService } from "../services/ReferentielService.js";
-import { PrismaClient } from "@prisma/client";
+import { IReferentielService } from "../services/interfaces/IReferentielService.js";
 import { CreateReferentielSchema, AddCompetenceToReferentielSchema, AddCompetencesToReferentielSchema } from "../validators/referentielValidator.js";
 
-const prisma = new PrismaClient();
-const service = new ReferentielService(prisma);
-
 export class ReferentielController {
+    constructor(private referentielService: IReferentielService) {}
     
-    static async getAll(_req: Request, res: Response) {
-        const referentiels = await service.getAllReferentiels();
+    async getAll(_req: Request, res: Response) {
+        const referentiels = await this.referentielService.getAllReferentiels();
         res.json(referentiels);
     }
 
-    static async findById(req: Request, res: Response) {
+    async findById(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
-            const referentiel = await service.findReferentielById(id);
+            const referentiel = await this.referentielService.findReferentielById(id);
             if (!referentiel) {
                 return res.status(404).json({ error: "Référentiel non trouvé" });
             }
@@ -26,10 +23,10 @@ export class ReferentielController {
         }
     }
 
-    static async create(req: Request, res: Response) {
+    async create(req: Request, res: Response) {
         try {
             const data = CreateReferentielSchema.parse(req.body);
-            const referentiel = await service.createReferentiel(data);
+            const referentiel = await this.referentielService.createReferentiel(data);
             res.status(201).json(referentiel);
         } catch (error: any) {
             const errors = error.errors ?? [{ message: error.message }];
@@ -37,49 +34,49 @@ export class ReferentielController {
         }
     }
 
-    static async update(req: Request, res: Response) {
+    async update(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
             const { name } = req.body;
-            const referentiel = await service.updateReferentiel(id, { name });
+            const referentiel = await this.referentielService.updateReferentiel(id, { name });
             res.json(referentiel);
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }
     }
 
-    static async delete(req: Request, res: Response) {
+    async delete(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
-            await service.deleteReferentiel(id);
+            await this.referentielService.deleteReferentiel(id);
             res.status(204).send();
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }
     }
 
-    static async getCompetences(req: Request, res: Response) {
+    async getCompetences(req: Request, res: Response) {
         try {
             const id: number = Number(req.params.id);
-            const competences = await service.getCompetencesByReferentielId(id);
+            const competences = await this.referentielService.getCompetencesByReferentielId(id);
             res.json(competences);
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }
     }
 
-    static async addCompetence(req: Request, res: Response) {
+    async addCompetence(req: Request, res: Response) {
         try {
             const referentielId: number = Number(req.params.id);
             
             // Détecter si c'est un tableau ou un seul ID
             if (Array.isArray(req.body.competenceIds)) {
                 const data = AddCompetencesToReferentielSchema.parse(req.body);
-                await service.addCompetencesToReferentiel(referentielId, data.competenceIds);
+                await this.referentielService.addCompetencesToReferentiel(referentielId, data.competenceIds);
                 res.status(201).json({ message: `${data.competenceIds.length} compétences ajoutées au référentiel` });
             } else {
                 const data = AddCompetenceToReferentielSchema.parse(req.body);
-                await service.addCompetenceToReferentiel(referentielId, data.competenceId);
+                await this.referentielService.addCompetenceToReferentiel(referentielId, data.competenceId);
                 res.status(201).json({ message: "Compétence ajoutée au référentiel" });
             }
         } catch (error: any) {

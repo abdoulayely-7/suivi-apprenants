@@ -1,7 +1,9 @@
-import { PrismaClient, Niveau } from "@prisma/client";
-export declare class NiveauService {
+import { Niveau } from "@prisma/client";
+import { INiveauRepository } from "../repositories/interfaces.js";
+import { INiveauService } from "./interfaces/INiveauService.js";
+export declare class NiveauService implements INiveauService {
     private repo;
-    constructor(prisma: PrismaClient);
+    constructor(repo: INiveauRepository);
     getAllNiveau(): Promise<Niveau[]>;
     createNiveau(data: Omit<Niveau, "id">): Promise<Niveau>;
     updateNiveau(id: number, data: Partial<Niveau>): Promise<Niveau>;

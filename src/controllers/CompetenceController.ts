@@ -1,55 +1,54 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-import { CompetenceService } from "../services/CompetenceService.js";
+import { ICompetenceService } from "../services/interfaces/ICompetenceService.js";
 import {CreateCompetenceSchema} from "../validators/CompetenceValidator.js";
 
-
-const prisma = new PrismaClient();
-const service = new CompetenceService(prisma);
-
 export class CompetenceController {
-  static async getAll(_req: Request, res: Response) {
-    const competences = await service.getAllCompetences();
+  constructor(private competenceService: ICompetenceService) {
+
+  }
+
+  async getAll(_req: Request, res: Response) {
+    const competences = await this.competenceService.getAllCompetences();
     res.json(competences);
   }
 
-  static async findById(req: Request, res: Response) {
+  async findById(req: Request, res: Response) {
     const id = Number(req.params.id);
-    const competence = await service.findCompetenceById(id);
+    const competence = await this.competenceService.findCompetenceById(id);
     if (!competence) return res.status(404).json({ error: "Compétence non trouvée" });
     return res.json(competence);
   }
 
-  static async create(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     try {
       const data = CreateCompetenceSchema.parse(req.body);
-      const competence = await service.createCompetence(data);
+      const competence = await this.competenceService.createCompetence(data);
       res.status(201).json(competence);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
   }
 
-  static async update(req: Request, res: Response) {
+  async update(req: Request, res: Response) {
     try {
       const data = CreateCompetenceSchema.parse(req.body);
       const id = Number(req.params.id);
-      const competence = await service.updateCompetence(id, data);
+      const competence = await this.competenceService.updateCompetence(id, data);
       res.json(competence);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
   }
 
-  static async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response) {
     const id = Number(req.params.id);
-    await service.deleteCompetence(id);
+    await this.competenceService.deleteCompetence(id);
     res.status(204).send();
   }
 
-  static async getNiveaux(req: Request, res: Response) {
+  async getNiveaux(req: Request, res: Response) {
     const id = Number(req.params.id);
-    const niveaux = await service.getNiveauxForCompetence(id);
+    const niveaux = await this.competenceService.getNiveauxForCompetence(id);
     res.json(niveaux);
   }
 }

@@ -1,7 +1,9 @@
-import { PrismaClient, Referentiel, Competence } from "@prisma/client";
-export declare class ReferentielService {
+import { Referentiel, Competence } from "@prisma/client";
+import { IReferentielRepository } from "../repositories/interfaces.js";
+import { IReferentielService } from "./interfaces/IReferentielService.js";
+export declare class ReferentielService implements IReferentielService {
     private repo;
-    constructor(prisma: PrismaClient);
+    constructor(repo: IReferentielRepository);
     getAllReferentiels(): Promise<any[]>;
     createReferentiel(data: Omit<Referentiel, "id">): Promise<Referentiel>;
     updateReferentiel(id: number, data: Partial<Referentiel>): Promise<Referentiel>;

@@ -1,17 +1,16 @@
-
 import { Router } from "express";
+import { Container } from "../container/Container.js";
 import { ProfileController } from "../controllers/ProfilController.js";
-import { authenticate } from "../middlewares/authMiddleware.js";
-import { authorize } from "../middlewares/rbacMiddleware.js";
+
+const container = new Container();
+const profilController = new ProfileController(container.getProfilService());
 
 const router = Router();
 
-router.use(authenticate, authorize("profiles"));
-
-router.get("/", ProfileController.getAll);
-router.get("/:id", ProfileController.findById);
-router.post("/", ProfileController.create);
-router.delete("/:id", ProfileController.delete);
-router.put("/:id", ProfileController.update);
+router.get("/", (req, res) => profilController.getAll(req, res));
+router.get("/:id", (req, res) => profilController.findById(req, res));
+router.post("/", (req, res) => profilController.create(req, res));
+router.delete("/:id", (req, res) => profilController.delete(req, res));
+router.put("/:id", (req, res) => profilController.update(req, res));
 
 export default router;

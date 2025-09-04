@@ -1,8 +1,7 @@
-import { CompetenceRepository } from "../repositories/CompetenceRepository.js";
 export class CompetenceService {
     repo;
-    constructor(prisma) {
-        this.repo = new CompetenceRepository(prisma);
+    constructor(repo) {
+        this.repo = repo;
     }
     async getAllCompetences() {
         return this.repo.findAll();

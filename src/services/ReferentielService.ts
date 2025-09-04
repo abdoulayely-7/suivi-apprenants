@@ -1,11 +1,12 @@
-import { PrismaClient, Referentiel, Competence } from "@prisma/client";
-import { ReferentielRepository } from "../repositories/ReferentielRepository.js";
+import { Referentiel, Competence } from "@prisma/client";
+import { IReferentielRepository } from "../repositories/interfaces.js";
+import { IReferentielService } from "./interfaces/IReferentielService.js";
 
-export class ReferentielService {
-  private repo: ReferentielRepository;
+export class ReferentielService implements IReferentielService {
+  private repo: IReferentielRepository;
 
-  constructor(prisma: PrismaClient) {
-    this.repo = new ReferentielRepository(prisma);
+  constructor(repo: IReferentielRepository) {
+    this.repo = repo;
   }
 
   async getAllReferentiels(): Promise<any[]> {
