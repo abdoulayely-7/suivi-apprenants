@@ -6,7 +6,7 @@ import { IProfilService } from "./interfaces/IProfilService.js";
 export class ProfileService implements IProfilService {
     private repo: IProfilRepository;
 
-    constructor(repo) {
+    constructor(repo: IProfilRepository) {
         this.repo = repo
     }
 

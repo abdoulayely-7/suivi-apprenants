@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IProfilService } from "../services/interfaces/IProfilService.js";
 import {CreateProfileSchema} from "../validators/profilValidator.js";
+import { StatusCodes } from "../validators/statusCodes.js";
 
 export class ProfileController {
     constructor(private profilService: IProfilService) {
@@ -16,7 +17,7 @@ export class ProfileController {
     const id: number = Number(req.params.id);
     const profile = await this.profilService.findProfileById(id);
     if (!profile) {
-    return res.status(404).json({ error: "Profil non trouvé" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Profil non trouvé" });
     }
     return res.json(profile);
     } catch (error: any) {
