@@ -1,15 +1,12 @@
 import { Router } from "express";
-import { PrismaClient } from "@prisma/client";
-import { UserService } from "../services/UserService.js";
 import { AuthController } from "../controllers/AuthController.js";
-import { DefaultTokenService } from "../services/DefaultTokenService.js";
-import { UserRepository } from "../repositories/UserRepository.js";
+import { Container } from "../container/Container.js";
 
-const prisma = new PrismaClient();
-const userRepo = new UserRepository(prisma);
-const userService = new UserService(userRepo);
-const tokens = new DefaultTokenService();
-const authController = new AuthController(userService, tokens);
+const container = new Container();
+const authController = new AuthController(
+  container.getUserService(),
+  container.getTokenService()
+);
 
 const router = Router();
 

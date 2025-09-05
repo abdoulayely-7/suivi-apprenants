@@ -1,6 +1,7 @@
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { StatusCodes } from "../validators/statusCodes.js";
 export class AuthController {
+    // Utiliser l'interface plutôt que l'implémentation concrète
     userService;
     tokens;
     constructor(userService, tokens) {

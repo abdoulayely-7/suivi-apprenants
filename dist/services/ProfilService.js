@@ -1,8 +1,7 @@
-import { ProfileRepository } from "../repositories/ProfileRepository.js";
 export class ProfileService {
     repo;
-    constructor(prisma) {
-        this.repo = new ProfileRepository(prisma);
+    constructor(repo) {
+        this.repo = repo;
     }
     async getAllProfiles() {
         return this.repo.findAll();

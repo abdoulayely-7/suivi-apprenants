@@ -42,6 +42,6 @@ export function makeAuthenticate(tokens: ITokenService) {
 
 
 // Backward-compatible default authenticate using a default token service instance
-import { DefaultTokenService } from "../services/DefaultTokenService.js";
-const __defaultTokens = new DefaultTokenService();
+import { TokenService } from "../services/TokenService.js";
+const __defaultTokens = new TokenService();
 export const authenticate = makeAuthenticate(__defaultTokens);

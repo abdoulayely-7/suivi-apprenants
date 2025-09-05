@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import { UserService } from "../services/UserService.js";
 import { UserWithRelations } from "../types/UserWithRelations.js";
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { StatusCodes } from "../validators/statusCodes.js";
 import { ITokenService } from "../services/ITokenService.js";
+import { IUserService } from "../services/interfaces/IUserService.js";
 
 export class AuthController {
-    private userService: UserService;
+    // Utiliser l'interface plutôt que l'implémentation concrète
+    private userService: IUserService;
     private tokens: ITokenService;
 
-    constructor(userService: UserService, tokens: ITokenService) {
+    constructor(userService: IUserService, tokens: ITokenService) {
         this.userService = userService;
         this.tokens = tokens;
     }
