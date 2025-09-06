@@ -1,5 +1,5 @@
 import { Referentiel, Competence } from "@prisma/client";
-import { IReferentielRepository } from "../repositories/interfaces.js";
+import { IReferentielRepository } from "../repositories/interfaces/IReferentielRepository.js";
 import { IReferentielService } from "./interfaces/IReferentielService.js";
 export declare class ReferentielService implements IReferentielService {
     private repo;

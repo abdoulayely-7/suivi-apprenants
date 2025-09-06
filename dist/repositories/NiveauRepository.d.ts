@@ -1,6 +1,6 @@
 import { PrismaClient, Niveau } from "@prisma/client";
-import { IRepository } from "./IRepository.js";
-export declare class NiveauRepository implements IRepository<Niveau> {
+import { INiveauRepository } from "./interfaces/INiveauRepository.js";
+export declare class NiveauRepository implements INiveauRepository {
     private prisma;
     constructor(prisma: PrismaClient);
     findAll(): Promise<Niveau[]>;

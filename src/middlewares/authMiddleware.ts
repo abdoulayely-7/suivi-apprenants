@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "../validators/statusCodes.js";
 import { ErreurMessages } from "../validators/erreurMessages.js";
 import { ITokenService } from "../services/ITokenService.js";
+import { TokenService } from "../services/TokenService.js";
 
 export interface AuthRequest extends Request {
   user?: { userId: number; role: string };
@@ -40,8 +41,5 @@ export function makeAuthenticate(tokens: ITokenService) {
   };
 }
 
-
-// Backward-compatible default authenticate using a default token service instance
-import { TokenService } from "../services/TokenService.js";
 const __defaultTokens = new TokenService();
 export const authenticate = makeAuthenticate(__defaultTokens);

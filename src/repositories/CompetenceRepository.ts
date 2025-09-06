@@ -1,7 +1,7 @@
 import { PrismaClient, Competence } from "@prisma/client";
-import { IRepository } from "./IRepository.js";
+import { ICompetenceRepository } from "./interfaces/ICompetenceRepository.js";
 
-export class CompetenceRepository implements IRepository<Competence> {
+export class CompetenceRepository implements ICompetenceRepository {
   private prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {
@@ -29,49 +29,21 @@ export class CompetenceRepository implements IRepository<Competence> {
     });
   }
 
-//   async delete(id: number): Promise<void> {
-//     await this.prisma.competence.delete({ where: { id } });
-//   }
+  async delete(id: number): Promise<void> {
+    const usedInUser = await this.prisma.userCompetence.count({
+      where: { competenceId: id },
+    });
 
-    // async delete(id: number): Promise<void> {
-    
-    // await this.prisma.userCompetence.deleteMany({
-    //     where: { competenceId: id },
-    // });
+    const usedInRef = await this.prisma.refCompetence.count({
+      where: { competenceId: id },
+    });
 
-    
-    // await this.prisma.competence.delete({
-    //     where: { id },
-    // });
-    // }
+    if (usedInUser > 0 || usedInRef > 0) {
+      throw new Error("Impossible de supprimer : compétence encore utilisée.");
+    }
 
-    // async delete(id: number): Promise<void> {
-    // const used = await this.prisma.userCompetence.count({
-    //     where: { competenceId: id },
-    // });
-
-    // if (used > 0) {
-    //     throw new Error("Impossible de supprimer : compétence encore utilisée par des utilisateurs.");
-    // }
-
-    // await this.prisma.competence.delete({ where: { id } });
-    // }
-
-        async delete(id: number): Promise<void> {
-            const usedInUser = await this.prisma.userCompetence.count({
-                 where: { competenceId: id },
-            });
-
-            const usedInRef = await this.prisma.refCompetence.count({
-                where: { competenceId: id },
-            });
-
-            if (usedInUser > 0 || usedInRef > 0) {
-             throw new Error("Impossible de supprimer : compétence encore utilisée.");
-            }
-
-             await this.prisma.competence.delete({ where: { id } });
-        }
+    await this.prisma.competence.delete({ where: { id } });
+  }
 
 
   

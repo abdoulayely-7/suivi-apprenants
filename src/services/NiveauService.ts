@@ -1,5 +1,5 @@
 import { Niveau } from "@prisma/client";
-import { INiveauRepository } from "../repositories/interfaces.js";
+import { INiveauRepository } from "../repositories/interfaces/INiveauRepository.js";
 import { INiveauService } from "./interfaces/INiveauService.js";
 
 export class NiveauService implements INiveauService {

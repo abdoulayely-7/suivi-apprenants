@@ -1,6 +1,6 @@
 
 import {Profil} from "@prisma/client";
-import { IProfilRepository } from "../repositories/interfaces.js";
+import { IProfilRepository } from "../repositories/interfaces/IProfilRepository.js";
 import { IProfilService } from "./interfaces/IProfilService.js";
 import {ProfileRepository} from "../repositories/ProfileRepository.js";
 

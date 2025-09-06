@@ -1,9 +1,9 @@
 import { PrismaClient, User} from "@prisma/client";
 import { UserWithRelations } from "../types/UserWithRelations.js";
-import { IRepository } from "./IRepository.js";
+import { IUserRepository } from "./interfaces/IUserRepository.js";
 import bcrypt from "bcrypt"; 
 
-export class UserRepository implements IRepository<User> {
+export class UserRepository implements IUserRepository {
     private prisma: PrismaClient;
 
     constructor(prisma: PrismaClient) {

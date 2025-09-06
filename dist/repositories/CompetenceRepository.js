@@ -20,26 +20,6 @@ export class CompetenceRepository {
             data,
         });
     }
-    //   async delete(id: number): Promise<void> {
-    //     await this.prisma.competence.delete({ where: { id } });
-    //   }
-    // async delete(id: number): Promise<void> {
-    // await this.prisma.userCompetence.deleteMany({
-    //     where: { competenceId: id },
-    // });
-    // await this.prisma.competence.delete({
-    //     where: { id },
-    // });
-    // }
-    // async delete(id: number): Promise<void> {
-    // const used = await this.prisma.userCompetence.count({
-    //     where: { competenceId: id },
-    // });
-    // if (used > 0) {
-    //     throw new Error("Impossible de supprimer : compétence encore utilisée par des utilisateurs.");
-    // }
-    // await this.prisma.competence.delete({ where: { id } });
-    // }
     async delete(id) {
         const usedInUser = await this.prisma.userCompetence.count({
             where: { competenceId: id },

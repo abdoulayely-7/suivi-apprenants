@@ -1,5 +1,5 @@
 import { Competence } from "@prisma/client";
-import { ICompetenceRepository } from "../repositories/interfaces.js";
+import { ICompetenceRepository } from "../repositories/interfaces/ICompetenceRepository.js";
 import { ICompetenceService } from "./interfaces/ICompetenceService.js";
 
 export class CompetenceService implements ICompetenceService {

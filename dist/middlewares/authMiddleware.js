@@ -1,5 +1,6 @@
 import { StatusCodes } from "../validators/statusCodes.js";
 import { ErreurMessages } from "../validators/erreurMessages.js";
+import { TokenService } from "../services/TokenService.js";
 export function makeAuthenticate(tokens) {
     return function authenticate(req, res, next) {
         const authHeader = req.headers.authorization;
@@ -29,8 +30,6 @@ export function makeAuthenticate(tokens) {
         }
     };
 }
-// Backward-compatible default authenticate using a default token service instance
-import { TokenService } from "../services/TokenService.js";
 const __defaultTokens = new TokenService();
 export const authenticate = makeAuthenticate(__defaultTokens);
 //# sourceMappingURL=authMiddleware.js.map

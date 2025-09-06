@@ -1,7 +1,8 @@
 import { PrismaClient, Referentiel, Competence } from "@prisma/client";
-import { IRepository } from "./IRepository.js";
 
-export class ReferentielRepository implements IRepository<Referentiel> {
+import { IReferentielRepository } from "./interfaces/IReferentielRepository.js";
+
+export class ReferentielRepository implements IReferentielRepository {
     private prisma: PrismaClient;
 
     constructor(prisma: PrismaClient) {

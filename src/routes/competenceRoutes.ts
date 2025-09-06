@@ -18,7 +18,6 @@ router.get("/:id", (req, res) => competenceController.findById(req, res));
 router.post("/", (req, res) => competenceController.create(req, res));
 router.put("/:id", (req, res) => competenceController.update(req, res));
 router.delete("/:id", (req, res) => competenceController.delete(req, res));
-
 router.get("/:id/niveaux", (req, res) => competenceController.getNiveaux(req, res));
 
 export default router;

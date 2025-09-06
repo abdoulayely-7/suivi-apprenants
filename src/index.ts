@@ -25,7 +25,7 @@ app.use("/niveaux", niveauRoute);
 app.use("/profilSorties",ProfilSortieRoutes)
 app.use("/users", useRoutes);
 app.use("/tags",tagRoutes);
-console.log("-------------------")
+console.log("Mi")
 app.use("/auth", authRoutes);
 
 

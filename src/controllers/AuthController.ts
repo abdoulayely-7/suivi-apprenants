@@ -6,7 +6,6 @@ import { ITokenService } from "../services/ITokenService.js";
 import { IUserService } from "../services/interfaces/IUserService.js";
 
 export class AuthController {
-    // Utiliser l'interface plutôt que l'implémentation concrète
     private userService: IUserService;
     private tokens: ITokenService;
 

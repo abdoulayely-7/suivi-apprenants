@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { IUserRepository } from "../repositories/IUserRepository.js";
+import { IUserRepository } from "../repositories/interfaces/IUserRepository.js";
 import { UserWithRelations } from "../types/UserWithRelations.js";
 import { IUserService } from "./interfaces/IUserService.js";
 

@@ -1,8 +1,9 @@
 import { PrismaClient, Tag } from "@prisma/client";
-import { IRepository } from "./IRepository.js";
+
+import { ITagRepository } from "./interfaces/ITagRepository.js";
 
 
-export class TagRepository implements IRepository<Tag> {
+export class TagRepository implements ITagRepository {
   private prisma: PrismaClient;
 
   constructor(prisma: PrismaClient) {

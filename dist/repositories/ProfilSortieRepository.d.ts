@@ -1,6 +1,6 @@
 import { PrismaClient, ProfilSortie } from "@prisma/client";
-import { IRepository } from "./IRepository.js";
-export declare class ProfilSortieRepository implements IRepository<ProfilSortie> {
+import { IProfilSortieRepository } from "./interfaces/IProfilSortieRepository.js";
+export declare class ProfilSortieRepository implements IProfilSortieRepository {
     private prisma;
     constructor(prisma: PrismaClient);
     findAll(): Promise<ProfilSortie[]>;

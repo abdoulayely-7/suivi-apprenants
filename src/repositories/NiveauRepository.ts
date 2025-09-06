@@ -1,7 +1,7 @@
 import { PrismaClient, Niveau } from "@prisma/client";
-import { IRepository } from "./IRepository.js";
+import { INiveauRepository } from "./interfaces/INiveauRepository.js";
  
-export class NiveauRepository implements IRepository<Niveau>{
+export class NiveauRepository implements INiveauRepository {
     private prisma: PrismaClient;
 
     constructor(prisma: PrismaClient) {
@@ -34,6 +34,5 @@ export class NiveauRepository implements IRepository<Niveau>{
     where: { id },
   });
 }
-
 
 }

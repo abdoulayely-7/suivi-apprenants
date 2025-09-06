@@ -1,5 +1,5 @@
 import { ProfilSortie } from "@prisma/client";
-import { IProfilSortieRepository } from "../repositories/interfaces.js";
+import { IProfilSortieRepository } from "../repositories/interfaces/IProfilSortieRepository.js";
 import { IProfilSortieService } from "./interfaces/IProfilSortieService.js";
 export declare class ProfilSortieService implements IProfilSortieService {
     private repo;

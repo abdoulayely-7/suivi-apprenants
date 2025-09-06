@@ -1,5 +1,5 @@
 import { Tag } from "@prisma/client";
-import { ITagRepository } from "../repositories/interfaces.js";
+import { ITagRepository } from "../repositories/interfaces/ITagRepository.js";
 import { ITagService } from "./interfaces/ITagService.js";
 
 export class TagService implements ITagService {

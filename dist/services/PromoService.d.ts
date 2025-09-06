@@ -1,5 +1,5 @@
 import { Promo, User } from "@prisma/client";
-import { IPromoRepository } from "../repositories/interfaces.js";
+import { IPromoRepository } from "../repositories/interfaces/IPromoRepository.js";
 import { IPromoService } from "./interfaces/IPromoService.js";
 export declare class PromoService implements IPromoService {
     private repo;

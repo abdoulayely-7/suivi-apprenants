@@ -1,5 +1,6 @@
 import { PrismaClient, Promo, User } from "@prisma/client";
-export declare class PromoRepository {
+import { IPromoRepository } from "./interfaces/IPromoRepository.js";
+export declare class PromoRepository implements IPromoRepository {
     private prisma;
     constructor(prisma: PrismaClient);
     findFormateursByPromo(idPromo: number): Promise<User[]>;
